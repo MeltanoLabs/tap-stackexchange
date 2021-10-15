@@ -1,0 +1,29 @@
+version: 1
+send_anonymous_usage_stats: true
+project_id: 7000e515-08c0-48bd-bdb9-cc06d193b4e5
+plugins:
+  extractors:
+  - name: tap-stackexchange
+    namespace: stackexchange
+    executable: ./tap-stackexchange.sh
+    capabilities:
+    - state
+    - catalog
+    - discover
+    settings:
+    - name: key
+      kind: password
+    - name: site
+      kind: string
+    - name: tags
+      kind: array
+    config:
+      tags:
+      - meltano
+      - singer-io
+      site: stackoverflow.com
+      # start_date: '2010-01-01T00:00:00Z'
+  loaders:
+  - name: target-sqlite
+    config:
+      database: ${MELTANO_PROJECT_ROOT}/output/${MELTANO_EXTRACT__LOAD_SCHEMA}
