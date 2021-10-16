@@ -22,7 +22,7 @@ plugins:
       - meltano
       - singer-io
       site: stackoverflow.com
-      start_date: '2021-10-01T00:00:00Z'
+      start_date: 1634274000
   loaders:
   - name: target-sqlite
     config:

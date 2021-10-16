@@ -43,7 +43,7 @@ class TapStackExchange(Tap):
         ),
         th.Property(
             "start_date",
-            th.DateTimeType,
+            th.IntegerType,
             description="The earliest record date to sync",
         ),
     ).to_dict()
