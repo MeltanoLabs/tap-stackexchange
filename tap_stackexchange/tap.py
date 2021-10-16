@@ -18,7 +18,7 @@ STREAM_TYPES = [
 
 
 class TapStackExchange(Tap):
-    """StackExchange tap class."""
+    """Singer tap for the StackExchange API."""
 
     name = "tap-stackexchange"
 
@@ -41,11 +41,11 @@ class TapStackExchange(Tap):
             default=[],
             description="Question tags",
         ),
-        # th.Property(
-        #     "start_date",
-        #     th.DateTimeType,
-        #     description="The earliest record date to sync",
-        # ),
+        th.Property(
+            "start_date",
+            th.DateTimeType,
+            description="The earliest record date to sync",
+        ),
     ).to_dict()
 
     def discover_streams(self) -> List[Stream]:

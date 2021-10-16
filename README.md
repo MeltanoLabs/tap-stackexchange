@@ -1,33 +1,36 @@
-# tap-stackexchange
+# `tap-stackexchange`
 
-`tap-stackexchange` is a Singer tap for StackExchange.
+Singer tap for the StackExchange API.
 
-Built with the [Meltano Tap SDK](https://sdk.meltano.com) for Singer Taps.
+Built with the [Meltano SDK](https://sdk.meltano.com) for Singer Taps and Targets.
+
+## Capabilities
+
+* `sync`
+* `catalog`
+* `state`
+* `discover`
+
+## Settings
+
+| Setting   | Required | Default | Description |
+|:----------|:--------:|:-------:|:------------|
+| key       | False    | None    | Pass this to receive a higher request quota |
+| site      | False    | stackoverflow.com | StackExchange site |
+| tags      | False    | None    | Question tags |
+| start_date| False    | None    | The earliest record date to sync |
+
+A full list of supported settings and capabilities is available by running: `tap-stackexchange --about`
 
 ## Installation
 
-- [ ] `Developer TODO:` Update the below as needed to correctly describe the install procedure. For instance, if you do not have a PyPi repo, or if you want users to directly install from your git repo, you can modify this step as appropriate.
-
 ```bash
-pipx install tap-stackexchange
-```
-
-## Configuration
-
-### Accepted Config Options
-
-- [ ] `Developer TODO:` Provide a list of config options accepted by the tap.
-
-A full list of supported settings and capabilities for this
-tap is available by running:
-
-```bash
-tap-stackexchange --about
+pipx install git+https://github.com/edgarrmondragon/tap-stackexchange.git
 ```
 
 ### Source Authentication and Authorization
 
-- [ ] `Developer TODO:` If your tap requires special access on the source system, or any special authentication requirements, provide those here.
+Register a [new application on Stack Apps](https://stackapps.com/apps/oauth/register) and copy the generate `key`.
 
 ## Usage
 
@@ -41,10 +44,6 @@ tap-stackexchange --help
 tap-stackexchange --config CONFIG --discover > ./catalog.json
 ```
 
-## Developer Resources
-
-- [ ] `Developer TODO:` As a first step, scan the entire project for the text "`TODO:`" and complete any recommended steps, deleting the "TODO" references once completed.
-
 ### Initialize your Development Environment
 
 ```bash
@@ -52,6 +51,7 @@ pipx install poetry
 poetry install
 ```
 
+<!--
 ### Create and Run Tests
 
 Create tests within the `tap_stackexchange/tests` subfolder and
@@ -66,6 +66,7 @@ You can also test the `tap-stackexchange` CLI interface directly using `poetry r
 ```bash
 poetry run tap-stackexchange --help
 ```
+-->
 
 ### Testing with [Meltano](https://www.meltano.com)
 
@@ -91,7 +92,7 @@ Now you can test and orchestrate using Meltano:
 # Test invocation:
 meltano invoke tap-stackexchange --version
 # OR run a test `elt` pipeline:
-meltano elt tap-stackexchange target-jsonl
+meltano elt tap-stackexchange target-sqlite --job_id=stackexchange-sqlite
 ```
 
 ### SDK Dev Guide

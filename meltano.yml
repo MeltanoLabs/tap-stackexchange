@@ -1,5 +1,5 @@
 version: 1
-send_anonymous_usage_stats: true
+send_anonymous_usage_stats: false
 project_id: 7000e515-08c0-48bd-bdb9-cc06d193b4e5
 plugins:
   extractors:
@@ -22,7 +22,7 @@ plugins:
       - meltano
       - singer-io
       site: stackoverflow.com
-      # start_date: '2010-01-01T00:00:00Z'
+      start_date: '2021-10-01T00:00:00Z'
   loaders:
   - name: target-sqlite
     config:
