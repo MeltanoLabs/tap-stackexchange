@@ -30,7 +30,7 @@ pipx install git+https://github.com/edgarrmondragon/tap-stackexchange.git
 
 ### Source Authentication and Authorization
 
-Register a [new application on Stack Apps](https://stackapps.com/apps/oauth/register) and copy the generate `key`.
+Register a [new application on Stack Apps](https://stackapps.com/apps/oauth/register) and copy the generated `key`.
 
 ## Usage
 
