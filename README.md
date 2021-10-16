@@ -91,8 +91,15 @@ Now you can test and orchestrate using Meltano:
 ```bash
 # Test invocation:
 meltano invoke tap-stackexchange --version
+
 # OR run a test `elt` pipeline:
 meltano elt tap-stackexchange target-sqlite --job_id=stackexchange-sqlite
+
+# Runtime configuration
+TAP_STACKEXCHANGE__LOAD_SCHEMA=dragon_ball_gt \
+TAP_STACKEXCHANGE_SITE=anime \
+TAP_STACKEXCHANGE_TAGS='["dragon-ball-gt"]' \
+meltano elt tap-stackexchange target-sqlite
 ```
 
 ### SDK Dev Guide
