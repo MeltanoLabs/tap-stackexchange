@@ -8,12 +8,12 @@ from requests_cache import install_cache
 from singer_sdk.streams import RESTStream
 
 
-def has_backoff(response: requests.Response):
+def has_no_backoff(response: requests.Response):
     """Check if response sets the `backoff` field."""
-    return "backoff" not in response.text
+    return "backoff" not in response.json()
 
 
-install_cache(expire_after=3600, filter_fn=has_backoff)  # 1 hour
+install_cache(expire_after=3600, filter_fn=has_no_backoff)  # 1 hour
 limiter = limits(calls=60, period=60)
 
 
@@ -40,7 +40,7 @@ class StackExchangeStream(RESTStream):
         context: Optional[dict],
     ) -> requests.Response:
         response = super()._request_with_backoff(prepared_request, context)
-        if "backoff" in response.text:
+        if not has_no_backoff(response):
             self.logger.debug(response.text)
             backoff = response.json()["backoff"]
             raise RateLimitException("Backoff triggered", backoff)
