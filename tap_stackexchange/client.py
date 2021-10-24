@@ -14,7 +14,7 @@ def has_no_backoff(response: requests.Response):
 
 
 install_cache(expire_after=3600, filter_fn=has_no_backoff)  # 1 hour
-limiter = limits(calls=60, period=60)
+limiter = limits(calls=100, period=60)
 
 
 class StackExchangeStream(RESTStream):

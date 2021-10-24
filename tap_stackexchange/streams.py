@@ -16,6 +16,34 @@ SHALLOW_USER = th.ObjectType(
     th.Property("user_type", th.StringType),
 )
 
+SITE = th.ObjectType(
+    th.Property("aliases", th.ArrayType(th.StringType)),
+    th.Property("api_site_parameter", th.StringType),
+    th.Property("audience", th.StringType),
+    th.Property("closed_beta_date", th.IntegerType),
+    th.Property("favicon_url", th.StringType),
+    th.Property("high_resolution_icon_url", th.StringType),
+    th.Property("high_resolution_icon_url", th.StringType),
+    th.Property("launch_date", th.IntegerType),
+    th.Property("logo_url", th.StringType),
+    th.Property("markdown_extensions", th.ArrayType(th.StringType)),
+    th.Property("name", th.StringType),
+    th.Property("open_beta_date", th.IntegerType),
+    th.Property("related_sites", th.ArrayType(th.StringType)),
+    th.Property("site_state", th.StringType),
+    th.Property("site_type", th.StringType),
+    th.Property("site_url", th.StringType),
+    th.Property(
+        "styling",
+        th.ObjectType(
+            th.Property("link_color", th.StringType),
+            th.Property("tag_background_color", th.StringType),
+            th.Property("tag_foreground_color", th.StringType),
+        ),
+    ),
+    th.Property("twitter_account", th.StringType),
+)
+
 
 class Questions(StackExchangeStream):
     """Questions stream."""
@@ -49,7 +77,7 @@ class Questions(StackExchangeStream):
             "migrated_from",
             th.ObjectType(
                 th.Property("on_date", th.IntegerType),
-                th.Property("other_site", th.StringType),
+                th.Property("other_site", SITE),
                 th.Property("question_id", th.IntegerType),
             ),
         ),
