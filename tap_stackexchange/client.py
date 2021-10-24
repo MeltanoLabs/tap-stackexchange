@@ -1,14 +1,20 @@
 """REST client handling, including StackExchangeStream base class."""
 
+from typing import Any, Dict, Iterable, List, Optional
+
 import requests
-from typing import Any, Dict, Optional, List, Iterable
-
+from ratelimit import RateLimitException, limits, sleep_and_retry
 from requests_cache import install_cache
-from ratelimit import limits, sleep_and_retry
-
 from singer_sdk.streams import RESTStream
 
-install_cache(expire_after=3600)  # 1 hour
+
+def has_backoff(response: requests.Response):
+    """Check if response sets the `backoff` field."""
+    return "backoff" not in response.text
+
+
+install_cache(expire_after=3600, filter_fn=has_backoff)  # 1 hour
+limiter = limits(calls=60, period=60)
 
 
 class StackExchangeStream(RESTStream):
@@ -27,13 +33,18 @@ class StackExchangeStream(RESTStream):
         return headers
 
     @sleep_and_retry
-    @limits(calls=15, period=1.0)
+    @limiter
     def _request_with_backoff(
         self,
         prepared_request: requests.PreparedRequest,
         context: Optional[dict],
     ) -> requests.Response:
-        return super()._request_with_backoff(prepared_request, context)
+        response = super()._request_with_backoff(prepared_request, context)
+        if "backoff" in response.text:
+            self.logger.debug(response.text)
+            backoff = response.json()["backoff"]
+            raise RateLimitException("Backoff triggered", backoff)
+        return response
 
     def get_url_params(
         self, context: Optional[dict], next_page_token: Optional[Any]
