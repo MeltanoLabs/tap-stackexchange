@@ -29,7 +29,17 @@ SITE = th.ObjectType(
     th.Property("markdown_extensions", th.ArrayType(th.StringType)),
     th.Property("name", th.StringType),
     th.Property("open_beta_date", th.IntegerType),
-    th.Property("related_sites", th.ArrayType(th.StringType)),
+    th.Property(
+        "related_sites",
+        th.ArrayType(
+            th.ObjectType(
+                th.Property("api_site_parameter", th.StringType),
+                th.Property("name", th.StringType),
+                th.Property("relation", th.StringType),
+                th.Property("site_url", th.StringType),
+            )
+        ),
+    ),
     th.Property("site_state", th.StringType),
     th.Property("site_type", th.StringType),
     th.Property("site_url", th.StringType),
