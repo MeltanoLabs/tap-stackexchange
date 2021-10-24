@@ -80,21 +80,3 @@ class StackExchangeStream(RESTStream):
     @property
     def partitions(self) -> Optional[List[dict]]:
         return [{"tag": tag} for tag in self.config.get("tags", [])]
-
-    def post_process(self, row: dict, context) -> dict:
-        user = row.pop("user", {})
-        if user and user["user_type"] != "does_not_exist":
-            row["user_id"] = user["user_id"]
-            row["account_id"] = user["account_id"]
-
-        owner = row.pop("owner", {})
-        if owner and owner["user_type"] != "does_not_exist":
-            row["owner_user_id"] = owner["user_id"]
-            row["owner_account_id"] = owner["account_id"]
-
-        reply_to_user = row.pop("reply_to_user", {})
-        if reply_to_user and reply_to_user["user_type"] != "does_not_exist":
-            row["reply_to_user_user_id"] = reply_to_user["user_id"]
-            row["reply_to_user_account_id"] = reply_to_user["account_id"]
-
-        return super().post_process(row, context)

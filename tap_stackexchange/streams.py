@@ -1,15 +1,20 @@
 """Stream type classes for tap-stackexchange."""
 
+import requests
 from singer_sdk import typing as th
 
 from tap_stackexchange.client import StackExchangeStream
 
-
-def prefix_user_fields(prefix: str):
-    return [
-        th.Property(f"{prefix}user_id", th.IntegerType),
-        th.Property(f"{prefix}account_id", th.IntegerType),
-    ]
+SHALLOW_USER = th.ObjectType(
+    th.Property("accept_rate", th.IntegerType),
+    th.Property("account_id", th.IntegerType),
+    th.Property("display_name", th.StringType),
+    th.Property("link", th.StringType),
+    th.Property("profile_image", th.StringType),
+    th.Property("reputation", th.IntegerType),
+    th.Property("user_id", th.IntegerType),
+    th.Property("user_type", th.StringType),
+)
 
 
 class Questions(StackExchangeStream):
@@ -40,7 +45,15 @@ class Questions(StackExchangeStream):
         th.Property("link", th.StringType),
         th.Property("closed_date", th.IntegerType),
         th.Property("closed_reason", th.StringType),
-        *prefix_user_fields("owner_"),
+        th.Property(
+            "migrated_from",
+            th.ObjectType(
+                th.Property("on_date", th.DateTimeType),
+                th.Property("other_site", th.StringType),
+                th.Property("question_id", th.IntegerType),
+            ),
+        ),
+        th.Property("owner", SHALLOW_USER),
     ).to_dict()
 
     def get_url_params(self, context, next_page_token):
@@ -80,7 +93,7 @@ class QuestionAnswers(StackExchangeStream):
         th.Property("last_activity_date", th.IntegerType),
         th.Property("last_edit_date", th.IntegerType),
         th.Property("score", th.IntegerType),
-        *prefix_user_fields("owner_"),
+        th.Property("owner", SHALLOW_USER),
     ).to_dict()
 
 
@@ -100,8 +113,8 @@ class QuestionComments(StackExchangeStream):
         th.Property("content_license", th.StringType),
         th.Property("creation_date", th.IntegerType),
         th.Property("score", th.IntegerType),
-        *prefix_user_fields("owner_"),
-        *prefix_user_fields("reply_to_user_"),
+        th.Property("owner", SHALLOW_USER),
+        th.Property("reply_to_user", SHALLOW_USER),
     ).to_dict()
 
     def get_url_params(self, context, next_page_token):
@@ -115,15 +128,22 @@ class TopAskers(StackExchangeStream):
 
     name = "top_askers"
     path = "/tags/{tag}/top-askers/all_time"
-    primary_keys = ["user_id", "tag"]
+    primary_keys = ["idx", "tag"]
     replication_key = None
 
     schema = th.PropertiesList(
-        *prefix_user_fields(""),
+        th.Property("user", SHALLOW_USER),
+        th.Property("idx", th.IntegerType),
         th.Property("tag", th.StringType),
         th.Property("post_count", th.IntegerType),
         th.Property("score", th.IntegerType),
     ).to_dict()
+
+    def parse_response(self, response: requests.Response):
+        records = super().parse_response(response)
+        for idx, record in enumerate(records):
+            record["idx"] = idx
+            yield record
 
     def post_process(self, row: dict, context) -> dict:
         row = super().post_process(row, context)
@@ -132,7 +152,7 @@ class TopAskers(StackExchangeStream):
 
 
 class TopAnswerers(TopAskers):
-    """Top anwerers for a tag."""
+    """Top answerers for a tag."""
 
     name = "top_answerers"
     path = "/tags/{tag}/top-answerers/all_time"
