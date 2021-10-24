@@ -48,11 +48,12 @@ class Questions(StackExchangeStream):
         th.Property(
             "migrated_from",
             th.ObjectType(
-                th.Property("on_date", th.DateTimeType),
+                th.Property("on_date", th.IntegerType),
                 th.Property("other_site", th.StringType),
                 th.Property("question_id", th.IntegerType),
             ),
         ),
+        th.Property("protected_date", th.IntegerType),
         th.Property("owner", SHALLOW_USER),
     ).to_dict()
 
