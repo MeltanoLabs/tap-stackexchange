@@ -1,6 +1,6 @@
 """REST client handling, including StackExchangeStream base class."""
 
-from typing import Any, Dict, Iterable, List, Optional
+from typing import Any, Dict, List, Optional
 
 import requests
 from ratelimit import RateLimitException, limits, sleep_and_retry
@@ -52,7 +52,7 @@ class StackExchangeStream(RESTStream):
         """Return a dictionary of values to be used in URL parameterization."""
         params = {
             "site": self.config["site"],
-            "key": self.config["key"],
+            "key": self.config.get("key"),
             "pagesize": self.PAGE_SIZE,
             "order": "asc",
             "sort": "activity",
