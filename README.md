@@ -1,5 +1,7 @@
 # `tap-stackexchange`
 
+[![Test](https://github.com/MeltanoLabs/tap-stackexchange/actions/workflows/test.yml/badge.svg)](https://github.com/MeltanoLabs/tap-stackexchange/actions/workflows/test.yml)
+
 Singer tap for the StackExchange API.
 
 Built with the [Meltano SDK](https://sdk.meltano.com) for Singer Taps and Targets.
