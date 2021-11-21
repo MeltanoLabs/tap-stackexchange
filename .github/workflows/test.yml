@@ -26,7 +26,6 @@ jobs:
     - name: Create virtual environment
       run: |
         poetry env use python
-        poetry run pip install --upgrade pip setuptools
     - name: Install dependencies
       run: |
         poetry install --no-root
@@ -53,7 +52,6 @@ jobs:
     - name: Create virtual environment
       run: |
         poetry env use python
-        poetry run pip install --upgrade pip setuptools
     - name: Install dependencies
       run: |
         poetry install --no-root
