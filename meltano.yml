@@ -17,6 +17,8 @@ plugins:
       kind: string
     - name: tags
       kind: array
+    - name: metrics_log_level
+      value: debug
     config:
       tags:
       - meltano
@@ -27,3 +29,4 @@ plugins:
   - name: target-sqlite
     config:
       database: ${MELTANO_PROJECT_ROOT}/output/${MELTANO_EXTRACT__LOAD_SCHEMA}
+  - name: target-jsonl
