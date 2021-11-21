@@ -1,5 +1,7 @@
 """Stream type classes for tap-stackexchange."""
 
+from typing import Any, Dict, Optional
+
 import requests
 from singer_sdk import typing as th
 
@@ -95,12 +97,32 @@ class Questions(StackExchangeStream):
         th.Property("owner", SHALLOW_USER),
     ).to_dict()
 
-    def get_url_params(self, context, next_page_token):
+    def get_url_params(
+        self, context: Optional[dict], next_page_token: Optional[Any]
+    ) -> Dict[str, Any]:
+        """Get URL query parameters.
+
+        Args:
+            context: Stream sync context.
+            next_page_token: Value used to retrieve next page.
+
+        Returns:
+            Dictionary of URL query parameters.
+        """
         params = super().get_url_params(context, next_page_token)
-        params["tagged"] = context["tag"]
+        params["tagged"] = context["tag"] if context else None
         return params
 
-    def get_child_context(self, record: dict, context) -> dict:
+    def get_child_context(self, record: dict, context: Optional[dict]) -> dict:
+        """Get context dictionary for child streams.
+
+        Args:
+            record: Single question record.
+            context: Stream sync context.
+
+        Returns:
+            Context for child streams.
+        """
         return {"question_id": record["question_id"]}
 
 
@@ -131,6 +153,28 @@ class QuestionAnswers(StackExchangeStream):
         th.Property("creation_date", th.IntegerType),
         th.Property("last_activity_date", th.IntegerType),
         th.Property("last_edit_date", th.IntegerType),
+        th.Property("community_owned_date", th.IntegerType),
+        th.Property(
+            "posted_by_collectives",
+            th.ArrayType(
+                th.ObjectType(
+                    th.Property("description", th.StringType),
+                    th.Property(
+                        "external_links",
+                        th.ArrayType(
+                            th.ObjectType(
+                                th.Property("type", th.StringType),
+                                th.Property("link", th.StringType),
+                            )
+                        ),
+                    ),
+                    th.Property("link", th.StringType),
+                    th.Property("name", th.StringType),
+                    th.Property("slug", th.StringType),
+                    th.Property("tags", th.ArrayType(th.StringType)),
+                )
+            ),
+        ),
         th.Property("score", th.IntegerType),
         th.Property("owner", SHALLOW_USER),
     ).to_dict()
@@ -156,7 +200,18 @@ class QuestionComments(StackExchangeStream):
         th.Property("reply_to_user", SHALLOW_USER),
     ).to_dict()
 
-    def get_url_params(self, context, next_page_token):
+    def get_url_params(
+        self, context: Optional[dict], next_page_token: Optional[Any]
+    ) -> Dict[str, Any]:
+        """Get URL query parameters.
+
+        Args:
+            context: Stream sync context.
+            next_page_token: Value used to retrieve next page.
+
+        Returns:
+            Dictionary of URL query parameters.
+        """
         params = super().get_url_params(context, next_page_token)
         params["sort"] = "creation"
         return params
@@ -179,15 +234,33 @@ class TopAskers(StackExchangeStream):
     ).to_dict()
 
     def parse_response(self, response: requests.Response):
+        """Process records in response.
+
+        Args:
+            response: HTTP response object.
+
+        Yields:
+            Records.
+        """
         records = super().parse_response(response)
         for idx, record in enumerate(records):
             record["idx"] = idx
             yield record
 
-    def post_process(self, row: dict, context) -> dict:
-        row = super().post_process(row, context)
-        row["tag"] = context["tag"]
-        return row
+    def post_process(self, row: dict, context: Optional[dict] = None) -> Optional[dict]:
+        """Process record before writing it to stdout.
+
+        Args:
+            row: Single record.
+            context: Stream sync context.
+
+        Returns:
+            A dictionary with the new record.
+        """
+        updated_row = super().post_process(row, context)
+        if updated_row is not None:
+            updated_row["tag"] = context["tag"]  # type: ignore
+        return updated_row
 
 
 class TopAnswerers(TopAskers):
