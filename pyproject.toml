@@ -21,7 +21,7 @@ tox = "^3.24.4"
 flake8 = "^4.0.1"
 black = "^21.12b0"
 pydocstyle = "^6.1.1"
-mypy = "^0.920"
+mypy = "^0.921"
 types-requests = "^2.26.2"
 isort = "^5.10.1"
 
