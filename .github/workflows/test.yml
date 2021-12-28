@@ -8,6 +8,8 @@ jobs:
   linting:
 
     runs-on: ubuntu-latest
+    env:
+      SETUPTOOLS_USE_DISTUTILS: stdlib
     strategy:
       matrix:
         # Only lint using the primary version used for dev
@@ -35,6 +37,8 @@ jobs:
 
   pytest:
     runs-on: ubuntu-latest
+    env:
+      SETUPTOOLS_USE_DISTUTILS: stdlib
     strategy:
       matrix:
         python-version: ["3.7", "3.8", "3.9", "3.10"]
