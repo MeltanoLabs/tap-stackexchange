@@ -17,7 +17,7 @@ ratelimit = "==2.2.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.5"
-tox = "^3.24.4"
+tox = "^3.24.5"
 flake8 = "^4.0.1"
 black = "^21.12b0"
 pydocstyle = "^6.1.1"
