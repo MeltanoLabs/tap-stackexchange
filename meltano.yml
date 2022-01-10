@@ -5,7 +5,7 @@ plugins:
   extractors:
   - name: tap-stackexchange
     namespace: stackexchange
-    executable: ./tap-stackexchange.sh
+    pip_url: -e .
     capabilities:
     - state
     - catalog
