@@ -43,10 +43,11 @@ module = [
 ignore_missing_imports = true
 
 [build-system]
-requires = [
-    "setuptools",
-    "poetry-core>=1.0.0",
-]
+# Uncomment the pinned version in favor of the git URL once
+# https://github.com/python-poetry/poetry-core/pull/257 is merged
+# and a new poetry-core 1.0.x is released
+# requires = ["poetry-core>=1.0.0"]
+requires = ["poetry-core @ git+https://github.com/python-poetry/poetry-core.git@master"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
