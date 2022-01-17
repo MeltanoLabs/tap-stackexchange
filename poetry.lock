@@ -583,7 +583,7 @@ use_chardet_on_py3 = ["chardet (>=3.0.2,<5)"]
 
 [[package]]
 name = "requests-cache"
-version = "0.9.0"
+version = "0.9.1"
 description = "A transparent persistent cache for the requests library"
 category = "main"
 optional = false
@@ -606,7 +606,7 @@ bson = ["bson (>=0.5)"]
 security = ["itsdangerous (>=2.0,<3.0)"]
 yaml = ["pyyaml (>=5.4)"]
 json = ["ujson (>=4.0)"]
-docs = ["furo (>=2021.9.8)", "linkify-it-py (>=1.0.1,<2.0.0)", "myst-parser (>=0.15.1,<0.16.0)", "sphinx (==4.3.0)", "sphinx-autodoc-typehints (>=1.11,<2.0)", "sphinx-automodapi (>=0.13,<0.14)", "sphinx-copybutton (>=0.3,<0.5)", "sphinx-inline-tabs (>=2021.8.17b10,<2022.0.0)", "sphinx-notfound-page", "sphinx-panels (>=0.6,<0.7)", "sphinxcontrib-apidoc (>=0.3,<0.4)"]
+docs = ["furo (>=2021.9.8)", "linkify-it-py (>=1.0.1,<2.0.0)", "myst-parser (>=0.15.1,<0.16.0)", "sphinx (==4.3.0)", "sphinx-autodoc-typehints (>=1.11,<2.0)", "sphinx-automodapi (>=0.13,<0.15)", "sphinx-copybutton (>=0.3,<0.5)", "sphinx-inline-tabs (>=2022.1.2b11)", "sphinx-notfound-page", "sphinx-panels (>=0.6,<0.7)", "sphinxcontrib-apidoc (>=0.3,<0.4)"]
 
 [[package]]
 name = "simplejson"
@@ -790,7 +790,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = "<3.11,>=3.7"
-content-hash = "2706e5e6c4800a264ce0442de0c08c266105d2f683e166d3f53d5d10e32dbb37"
+content-hash = "cfe45881c08c18caf6d6d3deacb4c57b20390a8f4cf09d59f96c02bfb5c57242"
 
 [metadata.files]
 appdirs = [
@@ -1118,8 +1118,8 @@ requests = [
     {file = "requests-2.26.0.tar.gz", hash = "sha256:b8aa58f8cf793ffd8782d3d8cb19e66ef36f7aba4353eec859e74678b01b07a7"},
 ]
 requests-cache = [
-    {file = "requests-cache-0.9.0.tar.gz", hash = "sha256:d82b3af855ffc16807a401cfe5a924957a083512b430e635045cee767b99d169"},
-    {file = "requests_cache-0.9.0-py3-none-any.whl", hash = "sha256:dbcb543e2ffbd365f0e88d9d63081c305673a1e10b8b9679dd990bb2c57864d9"},
+    {file = "requests-cache-0.9.1.tar.gz", hash = "sha256:7737f83f0f48481a904bb9a9402233db5090931e46f9644c502646a573848d35"},
+    {file = "requests_cache-0.9.1-py3-none-any.whl", hash = "sha256:3e3384c48dca231ee4c49e7ba53162bc0d99e16721baf085bfba1552d065d151"},
 ]
 simplejson = [
     {file = "simplejson-3.11.1-cp27-cp27m-win32.whl", hash = "sha256:38c2b563cd03363e7cb2bbba6c20ae4eaafd853a83954c8c8dd345ee391787bf"},
