@@ -1,6 +1,9 @@
 # `tap-stackexchange`
 
 [![Test](https://github.com/MeltanoLabs/tap-stackexchange/actions/workflows/test.yml/badge.svg)](https://github.com/MeltanoLabs/tap-stackexchange/actions/workflows/test.yml)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=MeltanoLabs_tap-stackexchange&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=MeltanoLabs_tap-stackexchange)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=MeltanoLabs_tap-stackexchange&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=MeltanoLabs_tap-stackexchange)
+[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=MeltanoLabs_tap-stackexchange&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=MeltanoLabs_tap-stackexchange)
 
 Singer tap for the StackExchange API.
 
