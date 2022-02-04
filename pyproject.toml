@@ -16,7 +16,7 @@ requests-cache = "==0.9.1"
 ratelimit = "==2.2.1"
 
 [tool.poetry.dev-dependencies]
-pytest = "^6.2.5"
+pytest = "^7.0.0"
 tox = "^3.24.5"
 flake8 = "^4.0.1"
 black = "^22.1"
