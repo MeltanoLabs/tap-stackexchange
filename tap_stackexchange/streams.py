@@ -73,6 +73,11 @@ class Questions(StackExchangeStream):
             required=True,
         ),
         th.Property("is_answered", th.BooleanType),
+        th.Property(
+            "accepted_answer_id",
+            th.IntegerType,
+            description="The ID of the accepted answer",
+        ),
         th.Property("title", th.StringType),
         th.Property("last_activity_date", th.IntegerType),
         th.Property("creation_date", th.IntegerType),
