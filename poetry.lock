@@ -590,7 +590,7 @@ use_chardet_on_py3 = ["chardet (>=3.0.2,<5)"]
 
 [[package]]
 name = "requests-cache"
-version = "0.9.2"
+version = "0.9.3"
 description = "A transparent persistent cache for the requests library"
 category = "main"
 optional = false
@@ -831,7 +831,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = "<3.11,>=3.7.1"
-content-hash = "c6661c5f06b1b4d61742abc29f757b3567fa366887737663d396cf71438c349c"
+content-hash = "9584745b5e3ddfae5a461d59bb8ad1ef9deebbcfa358d7df07da781977eae791"
 
 [metadata.files]
 appdirs = [
@@ -1237,8 +1237,8 @@ requests = [
     {file = "requests-2.26.0.tar.gz", hash = "sha256:b8aa58f8cf793ffd8782d3d8cb19e66ef36f7aba4353eec859e74678b01b07a7"},
 ]
 requests-cache = [
-    {file = "requests-cache-0.9.2.tar.gz", hash = "sha256:71c03bfba2e2e30a8484fe6ac7a97e4ad3fb569bc8f1f554fe01e27c51b47810"},
-    {file = "requests_cache-0.9.2-py3-none-any.whl", hash = "sha256:318d0f228f785af02d159e973fdf7d06568f795b8099b01b3d066430a3194226"},
+    {file = "requests-cache-0.9.3.tar.gz", hash = "sha256:b32f8afba2439e1b3e12cba511c8f579271eff827f063210d62f9efa5bed6564"},
+    {file = "requests_cache-0.9.3-py3-none-any.whl", hash = "sha256:d8b32405b2725906aa09810f4796e54cc03029de269381b404c426bae927bada"},
 ]
 simplejson = [
     {file = "simplejson-3.11.1-cp27-cp27m-win32.whl", hash = "sha256:38c2b563cd03363e7cb2bbba6c20ae4eaafd853a83954c8c8dd345ee391787bf"},
