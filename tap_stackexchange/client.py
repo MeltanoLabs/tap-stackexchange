@@ -1,12 +1,10 @@
 """REST client handling, including StackExchangeStream base class."""
 
 import logging
-import time
-from functools import wraps
 from typing import Any, Callable, Dict, List, Optional
 
 import requests
-from ratelimit import RateLimitException, limits
+from ratelimit import RateLimitException, limits, sleep_and_retry
 from requests_cache import install_cache
 from singer_sdk.exceptions import RetriableAPIError
 from singer_sdk.streams import RESTStream
@@ -14,52 +12,16 @@ from singer_sdk.streams import RESTStream
 logger = logging.getLogger(__name__)
 
 
-def has_no_backoff(response: requests.Response):
+def has_backoff(response: requests.Response):
     """Check if response sets the `backoff` field."""
     try:
-        return "backoff" not in response.json()
+        return "backoff" in response.json()
     except Exception:
         return False
 
 
-install_cache(expire_after=3600, filter_fn=has_no_backoff)  # 1 hour
+install_cache(expire_after=3600, filter_fn=lambda r: not has_backoff(r))  # 1 hour
 limiter = limits(calls=100, period=60)
-
-
-def sleep_and_retry(func: Callable) -> Callable:
-    """Return a wrapped function that rescues rate limit exceptions.
-
-    Sleeps until the rate limit resets.
-
-    Args:
-        func: The function to decorate.
-
-    Returns:
-        Decorated function.
-    """
-
-    @wraps(func)
-    def _wrapper(*args, **kwargs):
-        """Call the rate limited function.
-
-        If the function raises a rate limit exception sleep for the remaining time
-        period and retry the function.
-
-        Args:
-            args: Positional arguments of the decorated function.
-            kwargs: Keyword arguments of the decorated function.
-        """
-        while True:
-            try:
-                return func(*args, **kwargs)
-            except RateLimitException as exception:
-                logger.debug("Sleeping for %s...", exception.period_remaining)
-                time.sleep(exception.period_remaining)
-            except RetriableAPIError as exception:
-                logger.debug("Sleeping for 5", exc_info=exception)
-                time.sleep(5)
-
-    return _wrapper
 
 
 class StackExchangeStream(RESTStream):
@@ -69,6 +31,8 @@ class StackExchangeStream(RESTStream):
     METRICS_LOG_LEVEL_SETTING = "DEBUG"
     url_base = "https://api.stackexchange.com/2.3"
     records_jsonpath = "$.items[*]"
+
+    rate_limit_response_codes = []
 
     @property
     def http_headers(self) -> dict:
@@ -91,11 +55,15 @@ class StackExchangeStream(RESTStream):
 
     def validate_response(self, response: requests.Response) -> None:
         """Validate the HTTP response."""
-        super().validate_response(response)
-        if not has_no_backoff(response):
-            self.logger.debug(response.text)
+        if has_backoff(response):
+            self.logger.info(response.text)
             backoff = response.json()["backoff"]
-            raise RateLimitException("Backoff triggered", backoff)
+            raise RateLimitException("Retrying", backoff)
+
+        try:
+            super().validate_response(response)
+        except RetriableAPIError as exc:
+            raise RateLimitException("Backoff triggered", 5) from exc
 
     def get_url_params(
         self, context: Optional[dict], next_page_token: Optional[Any]
