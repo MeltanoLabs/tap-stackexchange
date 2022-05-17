@@ -32,7 +32,7 @@ class StackExchangeStream(RESTStream):
     url_base = "https://api.stackexchange.com/2.3"
     records_jsonpath = "$.items[*]"
 
-    rate_limit_response_codes = []
+    rate_limit_response_codes: List[int] = []
 
     @property
     def http_headers(self) -> dict:
