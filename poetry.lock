@@ -549,6 +549,17 @@ python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,>=2.7"
 six = ">=1.5"
 
 [[package]]
+name = "python-dotenv"
+version = "0.20.0"
+description = "Read key-value pairs from a .env file and set them as environment variables"
+category = "main"
+optional = false
+python-versions = ">=3.5"
+
+[package.extras]
+cli = ["click (>=5.0)"]
+
+[[package]]
 name = "pytz"
 version = "2020.5"
 description = "World timezone definitions, modern and historical"
@@ -627,7 +638,7 @@ python-versions = "*"
 
 [[package]]
 name = "singer-sdk"
-version = "0.4.9"
+version = "0.5.0"
 description = "A framework for building Singer taps"
 category = "main"
 optional = false
@@ -645,6 +656,7 @@ memoization = ">=0.3.2,<0.4.0"
 pendulum = ">=2.1.0,<3.0.0"
 pipelinewise-singer-python = "1.2.0"
 PyJWT = ">=2.3,<3.0"
+python-dotenv = ">=0.20.0,<0.21.0"
 requests = ">=2.25.1,<3.0.0"
 sqlalchemy = ">=1.4,<2.0"
 
@@ -833,7 +845,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = "<3.11,>=3.7.1"
-content-hash = "4750df8540d961e5b146752b7260777022b66e6a5b00e3b9ce078e93178ed64f"
+content-hash = "b804cbd6178af658c4318db64b5f552461df3da7c0bc544bb789e9a8d7af8008"
 
 [metadata.files]
 appdirs = [
@@ -1226,6 +1238,10 @@ python-dateutil = [
     {file = "python-dateutil-2.8.2.tar.gz", hash = "sha256:0123cacc1627ae19ddf3c27a5de5bd67ee4586fbdd6440d9748f8abb483d3e86"},
     {file = "python_dateutil-2.8.2-py2.py3-none-any.whl", hash = "sha256:961d03dc3453ebbc59dbdea9e4e11c5651520a876d0f4db161e8674aae935da9"},
 ]
+python-dotenv = [
+    {file = "python-dotenv-0.20.0.tar.gz", hash = "sha256:b7e3b04a59693c42c36f9ab1cc2acc46fa5df8c78e178fc33a8d4cd05c8d498f"},
+    {file = "python_dotenv-0.20.0-py3-none-any.whl", hash = "sha256:d92a187be61fe482e4fd675b6d52200e7be63a12b724abbf931a40ce4fa92938"},
+]
 pytz = [
     {file = "pytz-2020.5-py2.py3-none-any.whl", hash = "sha256:16962c5fb8db4a8f63a26646d8886e9d769b6c511543557bc84e9569fb9a9cb4"},
     {file = "pytz-2020.5.tar.gz", hash = "sha256:180befebb1927b16f6b57101720075a984c019ac16b1b7575673bea42c6c3da5"},
@@ -1265,8 +1281,8 @@ simplejson = [
     {file = "simplejson-3.11.1.win32-py3.5.exe", hash = "sha256:c76d55d78dc8b06c96fd08c6cc5e2b0b650799627d3f9ca4ad23f40db72d5f6d"},
 ]
 singer-sdk = [
-    {file = "singer-sdk-0.4.9.tar.gz", hash = "sha256:d49d07da2090541d3494778ff10b711c266b7dc206c8d79e8545759092b4d9fe"},
-    {file = "singer_sdk-0.4.9-py3-none-any.whl", hash = "sha256:22640db10365344a1c4f1c6583176c75afa71cc25e916c2bf36459caf5f8164c"},
+    {file = "singer-sdk-0.5.0.tar.gz", hash = "sha256:95ba892fb6e7b8c7598f72f5452dfab5f863fca4588686c4d0eebe701cc34499"},
+    {file = "singer_sdk-0.5.0-py3-none-any.whl", hash = "sha256:322b900a15ccf0ef55c887fdd8e4617e33166739ac68041765f965249a2b84d6"},
 ]
 six = [
     {file = "six-1.16.0-py2.py3-none-any.whl", hash = "sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254"},
