@@ -12,8 +12,15 @@ from singer_sdk.streams import RESTStream
 logger = logging.getLogger(__name__)
 
 
-def has_backoff(response: requests.Response):
-    """Check if response sets the `backoff` field."""
+def has_backoff(response: requests.Response) -> bool:
+    """Check if response sets the `backoff` field.
+
+    Args:
+        response: HTTP response.
+
+    Returns:
+        True if the response contains a rate limiting backoff amount.
+    """
     try:
         return "backoff" in response.json()
     except Exception:
@@ -36,7 +43,11 @@ class StackExchangeStream(RESTStream):
 
     @property
     def http_headers(self) -> dict:
-        """Return the http headers needed."""
+        """Return the http headers needed.
+
+        Returns:
+            Mapping of HTTP headers.
+        """
         headers = {}
         if "user_agent" in self.config:
             headers["User-Agent"] = self.config.get("user_agent")
@@ -54,10 +65,19 @@ class StackExchangeStream(RESTStream):
         return sleep_and_retry(limiter(func))
 
     def validate_response(self, response: requests.Response) -> None:
-        """Validate the HTTP response."""
+        """Validate the HTTP response.
+
+        Args:
+            response: HTTP response.
+
+        Raises:
+            RateLimitException: if a backoff amount is returned with the response
+                or any other recoverable error occurs.
+        """
         if has_backoff(response):
             self.logger.info(response.text)
             backoff = response.json()["backoff"]
+            self.logger.info("BACKOFF: %s", backoff)
             raise RateLimitException("Retrying", backoff)
 
         try:
@@ -68,7 +88,15 @@ class StackExchangeStream(RESTStream):
     def get_url_params(
         self, context: Optional[dict], next_page_token: Optional[Any]
     ) -> Dict[str, Any]:
-        """Return a dictionary of values to be used in URL parameterization."""
+        """Return a dictionary of values to be used in URL parameterization.
+
+        Args:
+            context: Stream context dictionary.
+            next_page_token: Value used to retrieve next page of data.
+
+        Returns:
+            Mapping of URL query parameters.
+        """
         params = {
             "site": self.config["site"],
             "pagesize": self.PAGE_SIZE,
@@ -90,7 +118,15 @@ class StackExchangeStream(RESTStream):
     def get_next_page_token(
         self, response: requests.Response, previous_token: Optional[Any]
     ) -> Any:
-        """Get next page index from response."""
+        """Get next page index from response.
+
+        Args:
+            response: HTTP response.
+            previous_token: Previous pagination token.
+
+        Returns:
+            Next pagination token.
+        """
         has_more = response.json()["has_more"]
         previous_token = previous_token or 1
 
@@ -101,5 +137,9 @@ class StackExchangeStream(RESTStream):
 
     @property
     def partitions(self) -> Optional[List[dict]]:
-        """Partition stream by the configured tags."""
+        """Partition stream by the configured tags.
+
+        Returns:
+            List of dictionary representing different partitions in the stream.
+        """
         return [{"tag": tag} for tag in self.config.get("tags", [])]

@@ -49,5 +49,9 @@ class TapStackExchange(Tap):
     ).to_dict()
 
     def discover_streams(self) -> List[Stream]:
-        """Return a list of discovered streams."""
+        """Return a list of discovered streams.
+
+        Returns:
+            List of stream instances.
+        """
         return [stream_class(tap=self) for stream_class in STREAM_TYPES]
