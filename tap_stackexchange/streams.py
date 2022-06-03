@@ -1,6 +1,6 @@
 """Stream type classes for tap-stackexchange."""
 
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Generator, Optional
 
 import requests
 from singer_sdk import typing as th
@@ -238,7 +238,9 @@ class TopAskers(StackExchangeStream):
         th.Property("score", th.IntegerType),
     ).to_dict()
 
-    def parse_response(self, response: requests.Response):
+    def parse_response(
+        self, response: requests.Response
+    ) -> Generator[dict, None, None]:
         """Process records in response.
 
         Args:
