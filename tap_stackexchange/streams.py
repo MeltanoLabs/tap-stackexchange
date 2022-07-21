@@ -242,21 +242,6 @@ class Tags(StackExchangeStream):
         th.Property("count", th.IntegerType),
     ).to_dict()
 
-    def get_url_params(
-        self, context: Optional[dict], next_page_token: Optional[Any]
-    ) -> Dict[str, Any]:
-        """Get URL query parameters.
-
-        Args:
-            context: Stream sync context.
-            next_page_token: Value used to retrieve next page.
-
-        Returns:
-            Dictionary of URL query parameters.
-        """
-        params = super().get_url_params(context, next_page_token)
-        return params
-
 
 class TopAskers(StackExchangeStream):
     """Top askers for a tag."""
