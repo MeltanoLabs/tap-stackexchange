@@ -228,7 +228,6 @@ class Tags(StackExchangeStream):
     name = "tags"
     path = "/tags"
     primary_keys = ["name"]
-    replication_key = "name"
 
     schema = th.PropertiesList(
         th.Property(
