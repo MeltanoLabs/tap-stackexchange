@@ -650,7 +650,7 @@ python-versions = "*"
 
 [[package]]
 name = "singer-sdk"
-version = "0.5.0"
+version = "0.7.0"
 description = "A framework for building Singer taps"
 category = "main"
 optional = false
@@ -659,21 +659,22 @@ python-versions = ">=3.7.1,<3.11"
 [package.dependencies]
 backoff = ">=1.8.0,<2.0"
 click = ">=8.0,<9.0"
-cryptography = ">=3.4.6,<4.0.0"
+cryptography = ">=3.4.6,<38.0.0"
 importlib-metadata = {version = "*", markers = "python_version < \"3.8\""}
 inflection = ">=0.5.1,<0.6.0"
 joblib = ">=1.0.1,<2.0.0"
 jsonpath-ng = ">=1.5.3,<2.0.0"
-memoization = ">=0.3.2,<0.4.0"
+memoization = ">=0.3.2,<0.5.0"
 pendulum = ">=2.1.0,<3.0.0"
 pipelinewise-singer-python = "1.2.0"
-PyJWT = ">=2.3,<3.0"
+PyJWT = ">=2.4,<3.0"
 python-dotenv = ">=0.20.0,<0.21.0"
 requests = ">=2.25.1,<3.0.0"
 sqlalchemy = ">=1.4,<2.0"
+typing-extensions = ">=4.2.0,<5.0.0"
 
 [package.extras]
-docs = ["sphinx (>=4.5.0,<5.0.0)", "sphinx-rtd-theme (>=0.5.2,<0.6.0)", "sphinx-copybutton (>=0.3.1,<0.4.0)", "myst-parser (>=0.17.2,<0.18.0)"]
+docs = ["myst-parser (>=0.17.2,<0.19.0)", "sphinx (>=4.5,<6.0)", "sphinx-copybutton (>=0.3.1,<0.6.0)", "sphinx-rtd-theme (>=0.5.2,<1.1.0)"]
 
 [[package]]
 name = "six"
@@ -792,11 +793,11 @@ python-versions = "*"
 
 [[package]]
 name = "typing-extensions"
-version = "4.0.0"
-description = "Backported and Experimental Type Hints for Python 3.6+"
+version = "4.3.0"
+description = "Backported and Experimental Type Hints for Python 3.7+"
 category = "main"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.7"
 
 [[package]]
 name = "url-normalize"
@@ -857,7 +858,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = "<3.11,>=3.7.1"
-content-hash = "2b65fee31791bfc90dd6cdc7431d72126dda27deb1634d47640f6d59e4b21af6"
+content-hash = "1410c533ad3515bc954de13f6ec718e4e2fc47d953e4f625889f979af4b8e6d9"
 
 [metadata.files]
 appdirs = [
@@ -1297,8 +1298,8 @@ simplejson = [
     {file = "simplejson-3.11.1.win32-py3.5.exe", hash = "sha256:c76d55d78dc8b06c96fd08c6cc5e2b0b650799627d3f9ca4ad23f40db72d5f6d"},
 ]
 singer-sdk = [
-    {file = "singer-sdk-0.5.0.tar.gz", hash = "sha256:95ba892fb6e7b8c7598f72f5452dfab5f863fca4588686c4d0eebe701cc34499"},
-    {file = "singer_sdk-0.5.0-py3-none-any.whl", hash = "sha256:322b900a15ccf0ef55c887fdd8e4617e33166739ac68041765f965249a2b84d6"},
+    {file = "singer-sdk-0.7.0.tar.gz", hash = "sha256:f30e7197f03b915b147b67cb637f386189d46f7fb07b2b642051bdb4a009325c"},
+    {file = "singer_sdk-0.7.0-py3-none-any.whl", hash = "sha256:59ac4cdd68ae211fbb2ebd52b710e5685b783f549f2329a1f39dc1dca198b776"},
 ]
 six = [
     {file = "six-1.16.0-py2.py3-none-any.whl", hash = "sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254"},
@@ -1399,8 +1400,8 @@ types-urllib3 = [
     {file = "types_urllib3-1.26.3-py3-none-any.whl", hash = "sha256:580c784925d5902d5fb3b67c0c1019b3d20b8f2d54050f0bb07862d52b93ad03"},
 ]
 typing-extensions = [
-    {file = "typing_extensions-4.0.0-py3-none-any.whl", hash = "sha256:829704698b22e13ec9eaf959122315eabb370b0884400e9818334d8b677023d9"},
-    {file = "typing_extensions-4.0.0.tar.gz", hash = "sha256:2cdf80e4e04866a9b3689a51869016d36db0814d84b8d8a568d22781d45d27ed"},
+    {file = "typing_extensions-4.3.0-py3-none-any.whl", hash = "sha256:25642c956049920a5aa49edcdd6ab1e06d7e5d467fc00e0506c44ac86fbfca02"},
+    {file = "typing_extensions-4.3.0.tar.gz", hash = "sha256:e6d2677a32f47fc7eb2795db1dd15c1f34eff616bcaf2cfb5e997f854fa1c4a6"},
 ]
 url-normalize = [
     {file = "url-normalize-1.4.3.tar.gz", hash = "sha256:d23d3a070ac52a67b83a1c59a0e68f8608d1cd538783b401bc9de2c0fac999b2"},
