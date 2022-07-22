@@ -18,7 +18,7 @@ plugins:
     - name: tags
       kind: array
     - name: start_date
-      kind: date_iso8601
+      kind: integer
     - name: metrics_log_level
       value: debug
     config:
@@ -26,6 +26,7 @@ plugins:
       - meltano
       - singer-io
       site: stackoverflow.com
+      start_date: 1651381200
   loaders:
   - name: target-sqlite
     config:
