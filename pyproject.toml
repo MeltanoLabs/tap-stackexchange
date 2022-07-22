@@ -13,7 +13,7 @@ license = "Apache 2.0"
 python = "<3.11,>=3.7.1"
 requests-cache = "==0.9.5"
 ratelimit = "==2.2.1"
-singer-sdk = "^0.5.0"
+singer-sdk = "^0.7.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.1.2"
@@ -22,7 +22,7 @@ flake8 = "^4.0.1"
 black = "^22.6"
 pydocstyle = "^6.1.1"
 mypy = "^0.971"
-types-requests = "^2.28.2"
+types-requests = "^2.28.3"
 isort = "^5.10.1"
 
 [tool.black]
