@@ -222,6 +222,27 @@ class QuestionComments(StackExchangeStream):
         return params
 
 
+class Tags(StackExchangeStream):
+    """Tags stream."""
+
+    name = "tags"
+    path = "/tags"
+    primary_keys = ["name"]
+
+    schema = th.PropertiesList(
+        th.Property(
+            "name",
+            th.StringType,
+            description="Tag Name",
+            required=True,
+        ),
+        th.Property("has_synonyms", th.BooleanType),
+        th.Property("is_moderator_only", th.BooleanType),
+        th.Property("is_required", th.BooleanType),
+        th.Property("count", th.IntegerType),
+    ).to_dict()
+
+
 class TopAskers(StackExchangeStream):
     """Top askers for a tag."""
 

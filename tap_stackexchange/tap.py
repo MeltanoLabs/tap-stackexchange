@@ -11,6 +11,7 @@ STREAM_TYPES = [
     streams.Questions,
     streams.QuestionAnswers,
     streams.QuestionComments,
+    streams.Tags,
     streams.TagSynonyms,
     streams.TopAnswerers,
     streams.TopAskers,
