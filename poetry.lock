@@ -641,7 +641,7 @@ python-versions = "*"
 
 [[package]]
 name = "singer-sdk"
-version = "0.8.0"
+version = "0.9.0"
 description = "A framework for building Singer taps"
 category = "main"
 optional = false
@@ -665,7 +665,7 @@ sqlalchemy = ">=1.4,<2.0"
 typing-extensions = ">=4.2.0,<5.0.0"
 
 [package.extras]
-docs = ["myst-parser (>=0.17.2,<0.19.0)", "sphinx (>=4.5,<6.0)", "sphinx-copybutton (>=0.3.1,<0.6.0)", "sphinx-rtd-theme (>=0.5.2,<1.1.0)"]
+docs = ["myst-parser (>=0.17.2,<0.19.0)", "sphinx (>=4.5,<6.0)", "sphinx-autobuild (>=2021.3.14,<2022.0.0)", "sphinx-copybutton (>=0.3.1,<0.6.0)", "sphinx-rtd-theme (>=0.5.2,<1.1.0)"]
 
 [[package]]
 name = "six"
@@ -847,7 +847,7 @@ testing = ["func-timeout", "jaraco.itertools", "pytest (>=6)", "pytest-black (>=
 [metadata]
 lock-version = "1.1"
 python-versions = "<3.11,>=3.7.1"
-content-hash = "0a8015adc614b4eb462e6dcc42f135246a39d4a84ae21b825741a35c43bd8a35"
+content-hash = "4550a8a08177b1b65722405d8777664338758212e34f77e596f51ed88c5cafa6"
 
 [metadata.files]
 appdirs = [
@@ -1298,8 +1298,8 @@ simplejson = [
     {file = "simplejson-3.11.1.win32-py3.5.exe", hash = "sha256:c76d55d78dc8b06c96fd08c6cc5e2b0b650799627d3f9ca4ad23f40db72d5f6d"},
 ]
 singer-sdk = [
-    {file = "singer-sdk-0.8.0.tar.gz", hash = "sha256:d21577cede2e4d708ad7c01498da5e323c8daa707fe81d0469acc90c06dba330"},
-    {file = "singer_sdk-0.8.0-py3-none-any.whl", hash = "sha256:404b8bfdf76d353fd2b7cc068be10d49de0fff863ac543f89397ab589c994d38"},
+    {file = "singer-sdk-0.9.0.tar.gz", hash = "sha256:ced6389a7d30bb94b4f2249f0bee4105812d55f564b0de38087d942790ed34a1"},
+    {file = "singer_sdk-0.9.0-py3-none-any.whl", hash = "sha256:573fac974e7133f0d2e3dcbac69672058e0f01f008bba52d7ce52132779d8e48"},
 ]
 six = [
     {file = "six-1.16.0-py2.py3-none-any.whl", hash = "sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254"},
