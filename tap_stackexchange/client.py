@@ -6,7 +6,7 @@ import logging
 from typing import Any, Callable
 
 import requests
-from ratelimit import RateLimitException, limits, sleep_and_retry
+from pyrate_limiter import BucketFullException, Duration, Limiter, RequestRate
 from requests_cache import install_cache
 from singer_sdk.exceptions import RetriableAPIError
 from singer_sdk.helpers.jsonpath import extract_jsonpath
@@ -31,7 +31,8 @@ def has_backoff(response: requests.Response) -> bool:
 
 
 install_cache(expire_after=3600, filter_fn=lambda r: not has_backoff(r))  # 1 hour
-limiter = limits(calls=100, period=60)
+rate = RequestRate(100, Duration.MINUTE)
+limiter = Limiter(rate)
 
 
 class StackExchangeStream(RESTStream):
@@ -99,7 +100,7 @@ class StackExchangeStream(RESTStream):
         Returns:
             Decorated method.
         """
-        return sleep_and_retry(limiter(func))
+        return limiter.ratelimit(self.tap_name, delay=True)(func)
 
     def validate_response(self, response: requests.Response) -> None:
         """Validate the HTTP response.
@@ -108,19 +109,19 @@ class StackExchangeStream(RESTStream):
             response: HTTP response.
 
         Raises:
-            RateLimitException: if a backoff amount is returned with the response
+            BucketFullException: if a backoff amount is returned with the response
                 or any other recoverable error occurs.
         """
         if has_backoff(response):
             self.logger.info(response.text)
             backoff = response.json()["backoff"]
             self.logger.info("BACKOFF: %s", backoff)
-            raise RateLimitException("Retrying", backoff)
+            raise BucketFullException(self.tap_name, rate, backoff)
 
         try:
             super().validate_response(response)
         except RetriableAPIError as exc:
-            raise RateLimitException("Backoff triggered", 5) from exc
+            raise BucketFullException(self.tap_name, rate, 5) from exc
 
     def get_url_params(
         self,
