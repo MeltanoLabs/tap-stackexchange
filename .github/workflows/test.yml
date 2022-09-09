@@ -1,4 +1,4 @@
-name: Test tap-codat
+name: Test tap-stackexchange
 
 on: [push]
 
