@@ -85,6 +85,7 @@ class Questions(StackExchangeStream):
         th.Property("tags", th.ArrayType(th.StringType)),
         th.Property("view_count", th.IntegerType),
         th.Property("answer_count", th.IntegerType),
+        th.Property("comment_count", th.IntegerType),
         th.Property("content_license", th.StringType),
         th.Property("score", th.IntegerType),
         th.Property("link", th.StringType),

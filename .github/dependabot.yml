@@ -5,7 +5,7 @@
 
 version: 2
 updates:
-  - package-ecosystem: "pip"
+  - package-ecosystem: pip
     directory: "/"
     schedule:
       interval: "daily"
@@ -13,5 +13,17 @@ updates:
       timezone: "America/Mexico_City"
     reviewers:
       - "edgarrmondragon"
-    labels:
-      - "dependencies"
+  - package-ecosystem: pip
+    directory: "/.github/workflows"
+    schedule:
+      time: "10:23"
+      interval: "daily"
+    reviewers:
+      - "edgarrmondragon"
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      time: "10:23"
+    reviewers:
+      - "edgarrmondragon"

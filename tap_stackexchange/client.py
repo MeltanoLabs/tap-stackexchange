@@ -1,12 +1,15 @@
 """REST client handling, including StackExchangeStream base class."""
 
+from __future__ import annotations
+
 import logging
-from typing import Any, Callable, Dict, List, Optional
+from typing import Any, Callable
 
 import requests
 from pyrate_limiter import BucketFullException, Duration, Limiter, RequestRate
 from requests_cache import install_cache
 from singer_sdk.exceptions import RetriableAPIError
+from singer_sdk.helpers.jsonpath import extract_jsonpath
 from singer_sdk.streams import RESTStream
 
 logger = logging.getLogger(__name__)
@@ -40,7 +43,17 @@ class StackExchangeStream(RESTStream):
     url_base = "https://api.stackexchange.com/2.3"
     records_jsonpath = "$.items[*]"
 
-    rate_limit_response_codes: List[int] = []
+    rate_limit_response_codes: list[int] = []
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        """Initialize the stream.
+
+        Args:
+            *args: Positional arguments for RESTStream.
+            **kwargs: Keyword arguments for RESTStream.
+        """
+        super().__init__(*args, **kwargs)
+        self._custom_filter = None
 
     @property
     def http_headers(self) -> dict:
@@ -53,6 +66,30 @@ class StackExchangeStream(RESTStream):
         if "user_agent" in self.config:
             headers["User-Agent"] = self.config.get("user_agent")
         return headers
+
+    @property
+    def custom_filter_id(self) -> str | None:
+        """Return the custom filter id.
+
+        Returns:
+            Custom filter id.
+        """
+        if self._custom_filter is None:
+            request = self.build_prepared_request(
+                method="GET",
+                url=f"{self.url_base}/filters/create",
+                params={
+                    "include": "question.comment_count",
+                    "exclude": "",
+                    "unsafe": "false",
+                },
+            )
+            response = self.requests_session.send(request)
+            self._custom_filter = next(
+                extract_jsonpath("$.items[*].filter", response.json()),
+                None,
+            )
+        return self._custom_filter
 
     def request_decorator(self, func: Callable) -> Callable:
         """Decorate the request method of the stream.
@@ -87,8 +124,10 @@ class StackExchangeStream(RESTStream):
             raise BucketFullException(self.tap_name, rate, 5) from exc
 
     def get_url_params(
-        self, context: Optional[dict], next_page_token: Optional[Any]
-    ) -> Dict[str, Any]:
+        self,
+        context: dict | None,
+        next_page_token: Any | None,
+    ) -> dict[str, Any]:
         """Return a dictionary of values to be used in URL parameterization.
 
         Args:
@@ -103,6 +142,7 @@ class StackExchangeStream(RESTStream):
             "pagesize": self.PAGE_SIZE,
             "order": "asc",
             "sort": "activity",
+            "filter": self.custom_filter_id,
         }
 
         if "key" in self.config and self.config["key"]:
@@ -117,7 +157,7 @@ class StackExchangeStream(RESTStream):
         return params
 
     def get_next_page_token(
-        self, response: requests.Response, previous_token: Optional[Any]
+        self, response: requests.Response, previous_token: Any | None
     ) -> Any:
         """Get next page index from response.
 
@@ -137,7 +177,7 @@ class StackExchangeStream(RESTStream):
             return None
 
     @property
-    def partitions(self) -> Optional[List[dict]]:
+    def partitions(self) -> list[dict] | None:
         """Partition stream by the configured tags.
 
         Returns:
