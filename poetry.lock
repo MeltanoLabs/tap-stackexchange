@@ -480,11 +480,11 @@ diagrams = ["jinja2", "railroad-diagrams"]
 
 [[package]]
 name = "pyrate-limiter"
-version = "2.8.1"
+version = "2.8.2"
 description = "Python Rate-Limiter using Leaky-Bucket Algorithm"
 category = "main"
 optional = false
-python-versions = ">=3.6.2,<4.0.0"
+python-versions = ">=3.7,<4.0"
 
 [package.extras]
 all = ["filelock (>=3.0)", "redis (>=3.3,<4.0)", "redis-py-cluster (>=2.1.3,<3.0.0)"]
@@ -782,7 +782,7 @@ testing = ["func-timeout", "jaraco.itertools", "pytest (>=6)", "pytest-black (>=
 [metadata]
 lock-version = "1.1"
 python-versions = "<3.11,>=3.7.1"
-content-hash = "ed63ad25cd553d63c26bf25aa9c516395666d17b9b51b65b4591027c44b0f060"
+content-hash = "fc3be15af8ceac20468e6e1d9fcc2e6ad00651e9ed4792544b921f77febd1277"
 
 [metadata.files]
 appdirs = [
@@ -1148,7 +1148,7 @@ pyparsing = [
     {file = "pyparsing-3.0.9.tar.gz", hash = "sha256:2b020ecf7d21b687f219b71ecad3631f644a47f01403fa1d1036b0c6416d70fb"},
 ]
 pyrate-limiter = [
-    {file = "pyrate-limiter-2.8.1.tar.gz", hash = "sha256:0741b7db4b3facdce60bd836e0fcc43911bc52c443f674f924afba7e02e79c18"},
+    {file = "pyrate-limiter-2.8.2.tar.gz", hash = "sha256:083aa1732053e6b135487b8295989b7a24e7075964f076577422dfb3712be413"},
 ]
 pyrsistent = [
     {file = "pyrsistent-0.18.1-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:df46c854f490f81210870e509818b729db4488e1f30f2a1ce1698b2295a878d1"},
@@ -1215,14 +1215,6 @@ simplejson = [
     {file = "simplejson-3.11.1-cp35-cp35m-win32.whl", hash = "sha256:11d91b88cc1e9645c79f0f6fd2961684249af963e2bbff5a00061ed4bbf55379"},
     {file = "simplejson-3.11.1-cp35-cp35m-win_amd64.whl", hash = "sha256:36b0de42e3a8a51086c339cc803f6ac7a9d1d5254066d680956a195ca12cf0d8"},
     {file = "simplejson-3.11.1.tar.gz", hash = "sha256:01a22d49ddd9a168b136f26cac87d9a335660ce07aa5c630b8e3607d6f4325e7"},
-    {file = "simplejson-3.11.1.win-amd64-py2.7.exe", hash = "sha256:1975e6b621fe1c2b9321c56476e8ebe1b851006517c1d67041b378950374694c"},
-    {file = "simplejson-3.11.1.win-amd64-py3.3.exe", hash = "sha256:f60f01b16215568a08611eb6a4d61d76c4173c3d69aac9cad593777056c284d5"},
-    {file = "simplejson-3.11.1.win-amd64-py3.4.exe", hash = "sha256:6be48181337ac5f5d9f48c9c504f317e245519318992122a05c40e482a721d59"},
-    {file = "simplejson-3.11.1.win-amd64-py3.5.exe", hash = "sha256:8ae8cdcbe49e29ddfdae0ab81c1f6c070706d18fcee86371352d0d54b47ad8ec"},
-    {file = "simplejson-3.11.1.win32-py2.7.exe", hash = "sha256:ebbd52b59948350ad66205e66b299fcca0e0821ed275c21262c522f4a6cea9d2"},
-    {file = "simplejson-3.11.1.win32-py3.3.exe", hash = "sha256:2dc7fb8c0c0ff9483ce31b93b700b1fa60aca9d099e6aca9813f28ff131ccf59"},
-    {file = "simplejson-3.11.1.win32-py3.4.exe", hash = "sha256:97cc43ef4cb18a2725f6e26d22b96f8ca50872a195bde32707dcb284f89c1d4d"},
-    {file = "simplejson-3.11.1.win32-py3.5.exe", hash = "sha256:c76d55d78dc8b06c96fd08c6cc5e2b0b650799627d3f9ca4ad23f40db72d5f6d"},
 ]
 singer-sdk = [
     {file = "singer-sdk-0.10.0.tar.gz", hash = "sha256:347b34d37541cd55678af3e574807c45b539cd538a91f28f36e0c0c51676098d"},
