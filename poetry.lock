@@ -22,11 +22,11 @@ tests_no_zope = ["cloudpickle", "coverage[toml] (>=5.0.2)", "hypothesis", "mypy 
 
 [[package]]
 name = "backoff"
-version = "1.8.0"
+version = "2.1.2"
 description = "Function decoration for backoff and retry"
 category = "main"
 optional = false
-python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+python-versions = ">=3.7,<4.0"
 
 [[package]]
 name = "black"
@@ -638,14 +638,14 @@ python-versions = ">=2.5, !=3.0.*, !=3.1.*, !=3.2.*"
 
 [[package]]
 name = "singer-sdk"
-version = "0.11.0"
+version = "0.11.1"
 description = "A framework for building Singer taps"
 category = "main"
 optional = false
 python-versions = ">=3.7.1,<3.11"
 
 [package.dependencies]
-backoff = ">=1.8.0,<2.0"
+backoff = ">=2.0.0,<3.0"
 click = ">=8.0,<9.0"
 cryptography = ">=3.4.6,<39.0.0"
 fs = ">=2.4.16,<3.0.0"
@@ -798,7 +798,7 @@ testing = ["func-timeout", "jaraco.itertools", "pytest (>=6)", "pytest-black (>=
 [metadata]
 lock-version = "1.1"
 python-versions = "<3.11,>=3.7.1"
-content-hash = "30d3fcff1d2a423db50fb445351ebdbd3a007e302b3ca1f827242b5db8318ea0"
+content-hash = "3de1dc502582019fe1763e675bee26f3c26c965227376cc1340f987c70bb11b9"
 
 [metadata.files]
 appdirs = [
@@ -810,8 +810,8 @@ attrs = [
     {file = "attrs-22.1.0.tar.gz", hash = "sha256:29adc2665447e5191d0e7c568fde78b21f9672d344281d0c6e1ab085429b22b6"},
 ]
 backoff = [
-    {file = "backoff-1.8.0-py2.py3-none-any.whl", hash = "sha256:d340bb6f36d025c04214b8925112d8456970e5f28dda46e4f1133bf5c622cb0a"},
-    {file = "backoff-1.8.0.tar.gz", hash = "sha256:c7187f15339e775aec926dc6e5e42f8a3ad7d3c2b9a6ecae7b535000f70cd838"},
+    {file = "backoff-2.1.2-py3-none-any.whl", hash = "sha256:b135e6d7c7513ba2bfd6895bc32bc8c66c6f3b0279b4c6cd866053cfd7d3126b"},
+    {file = "backoff-2.1.2.tar.gz", hash = "sha256:407f1bc0f22723648a8880821b935ce5df8475cf04f7b6b5017ae264d30f6069"},
 ]
 black = [
     {file = "black-22.8.0-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:ce957f1d6b78a8a231b18e0dd2d94a33d2ba738cd88a7fe64f53f659eea49fdd"},
@@ -1290,8 +1290,8 @@ simplejson = [
     {file = "simplejson-3.17.6.tar.gz", hash = "sha256:cf98038d2abf63a1ada5730e91e84c642ba6c225b0198c3684151b1f80c5f8a6"},
 ]
 singer-sdk = [
-    {file = "singer-sdk-0.11.0.tar.gz", hash = "sha256:8e1024b01ec3aeacb39460469bd8eaef6a4417235d632eaacb59de6098069fd3"},
-    {file = "singer_sdk-0.11.0-py3-none-any.whl", hash = "sha256:620877c6ad7591fffd748d4f928d5b8acbe8194ca084aa0f4000a42339ebe03e"},
+    {file = "singer-sdk-0.11.1.tar.gz", hash = "sha256:4e4f023a0872c611c18e41b794ac6d66270cc03808a096bf03fa06b80966610b"},
+    {file = "singer_sdk-0.11.1-py3-none-any.whl", hash = "sha256:13c08dbeeffb3f39abef7b00787d76f1c638873b833de67df228786704be56fb"},
 ]
 six = [
     {file = "six-1.16.0-py2.py3-none-any.whl", hash = "sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254"},
