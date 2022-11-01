@@ -13,12 +13,29 @@ plugins:
     settings:
     - name: key
       kind: password
+      label: API Key
+      description: StackExchange API Key
+      documentation: https://api.stackexchange.com/docs/authentication
+    - name: filter
+      kind: string
+      label: Filter
+      description: Custom API filter to apply to all requests
+      documentation: https://api.stackexchange.com/docs/filters
     - name: site
       kind: string
+      label: Site
+      description: StackExchange site to extract data from
+      documentation: https://stackexchange.com/sites
     - name: tags
       kind: array
+      label: Tags
+      description: Tags to extract data from
+      documentation: https://stackoverflow.com/tags
     - name: start_date
       kind: integer
+      label: Start Date
+      description: Start date to extract data from
+      documentation: https://api.stackexchange.com/docs/dates
     - name: metrics_log_level
       value: debug
     config:
