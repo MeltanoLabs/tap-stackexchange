@@ -7,6 +7,8 @@ from singer_sdk import typing as th
 
 from tap_stackexchange import streams
 
+FILTER_ID = "!6VvPDzOeLJfUL"
+
 STREAM_TYPES = [
     streams.Questions,
     streams.QuestionAnswers,
@@ -29,6 +31,13 @@ class TapStackExchange(Tap):
             th.StringType,
             required=False,
             description="Pass this to receive a higher request quota",
+        ),
+        th.Property(
+            "filter",
+            th.StringType,
+            required=False,
+            description="Custom API filter to apply to all requests",
+            default=FILTER_ID,
         ),
         th.Property(
             "site",

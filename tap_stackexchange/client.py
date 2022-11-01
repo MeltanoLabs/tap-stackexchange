@@ -9,7 +9,6 @@ import requests
 from pyrate_limiter import BucketFullException, Duration, Limiter, RequestRate
 from requests_cache import install_cache
 from singer_sdk.exceptions import RetriableAPIError
-from singer_sdk.helpers.jsonpath import extract_jsonpath
 from singer_sdk.streams import RESTStream
 
 logger = logging.getLogger(__name__)
@@ -40,6 +39,11 @@ class StackExchangeStream(RESTStream):
 
     PAGE_SIZE = 100
     METRICS_LOG_LEVEL_SETTING = "DEBUG"
+    CUSTOM_FILTER_INCLUDE = [
+        "question.comment_count",
+        "tag.last_activity_date",
+    ]
+
     url_base = "https://api.stackexchange.com/2.3"
     records_jsonpath = "$.items[*]"
 
@@ -53,7 +57,6 @@ class StackExchangeStream(RESTStream):
             **kwargs: Keyword arguments for RESTStream.
         """
         super().__init__(*args, **kwargs)
-        self._custom_filter = None
 
     @property
     def http_headers(self) -> dict:
@@ -67,30 +70,6 @@ class StackExchangeStream(RESTStream):
             headers["User-Agent"] = self.config.get("user_agent")
         return headers
 
-    @property
-    def custom_filter_id(self) -> str | None:
-        """Return the custom filter id.
-
-        Returns:
-            Custom filter id.
-        """
-        if self._custom_filter is None:
-            request = self.build_prepared_request(
-                method="GET",
-                url=f"{self.url_base}/filters/create",
-                params={
-                    "include": "question.comment_count",
-                    "exclude": "",
-                    "unsafe": "false",
-                },
-            )
-            response = self.requests_session.send(request)
-            self._custom_filter = next(
-                extract_jsonpath("$.items[*].filter", response.json()),
-                None,
-            )
-        return self._custom_filter
-
     def request_decorator(self, func: Callable) -> Callable:
         """Decorate the request method of the stream.
 
@@ -100,7 +79,7 @@ class StackExchangeStream(RESTStream):
         Returns:
             Decorated method.
         """
-        return limiter.ratelimit(self.tap_name, delay=True)(func)
+        return limiter.ratelimit(self.tap_name, delay=True, max_delay=600)(func)
 
     def validate_response(self, response: requests.Response) -> None:
         """Validate the HTTP response.
@@ -142,7 +121,7 @@ class StackExchangeStream(RESTStream):
             "pagesize": self.PAGE_SIZE,
             "order": "asc",
             "sort": "activity",
-            "filter": self.custom_filter_id,
+            "filter": self.config["filter"],
         }
 
         if "key" in self.config and self.config["key"]:
@@ -175,6 +154,10 @@ class StackExchangeStream(RESTStream):
             return previous_token + 1
         else:
             return None
+
+
+class TagPartitionedStream(StackExchangeStream):
+    """Tag-partitioned stream class."""
 
     @property
     def partitions(self) -> list[dict] | None:

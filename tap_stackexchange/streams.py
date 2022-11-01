@@ -1,11 +1,13 @@
 """Stream type classes for tap-stackexchange."""
 
-from typing import Any, Dict, Generator, Optional
+from __future__ import annotations
+
+from typing import Any, Generator
 
 import requests
 from singer_sdk import typing as th
 
-from tap_stackexchange.client import StackExchangeStream
+from tap_stackexchange.client import StackExchangeStream, TagPartitionedStream
 
 SHALLOW_USER = th.ObjectType(
     th.Property("accept_rate", th.IntegerType),
@@ -57,7 +59,7 @@ SITE = th.ObjectType(
 )
 
 
-class Questions(StackExchangeStream):
+class Questions(TagPartitionedStream):
     """Questions stream."""
 
     name = "questions"
@@ -104,8 +106,8 @@ class Questions(StackExchangeStream):
     ).to_dict()
 
     def get_url_params(
-        self, context: Optional[dict], next_page_token: Optional[Any]
-    ) -> Dict[str, Any]:
+        self, context: dict | None, next_page_token: Any | None
+    ) -> dict[str, Any]:
         """Get URL query parameters.
 
         Args:
@@ -119,7 +121,7 @@ class Questions(StackExchangeStream):
         params["tagged"] = context["tag"] if context else None
         return params
 
-    def get_child_context(self, record: dict, context: Optional[dict]) -> dict:
+    def get_child_context(self, record: dict, context: dict | None) -> dict:
         """Get context dictionary for child streams.
 
         Args:
@@ -132,7 +134,7 @@ class Questions(StackExchangeStream):
         return {"question_id": record["question_id"]}
 
 
-class QuestionAnswers(StackExchangeStream):
+class QuestionAnswers(TagPartitionedStream):
     """Question answers stream."""
 
     name = "answers"
@@ -186,7 +188,7 @@ class QuestionAnswers(StackExchangeStream):
     ).to_dict()
 
 
-class QuestionComments(StackExchangeStream):
+class QuestionComments(TagPartitionedStream):
     """Question comments stream."""
 
     name = "question_comments"
@@ -207,8 +209,8 @@ class QuestionComments(StackExchangeStream):
     ).to_dict()
 
     def get_url_params(
-        self, context: Optional[dict], next_page_token: Optional[Any]
-    ) -> Dict[str, Any]:
+        self, context: dict | None, next_page_token: Any | None
+    ) -> dict[str, Any]:
         """Get URL query parameters.
 
         Args:
@@ -229,6 +231,7 @@ class Tags(StackExchangeStream):
     name = "tags"
     path = "/tags"
     primary_keys = ["name"]
+    replication_key = "last_activity_date"
 
     schema = th.PropertiesList(
         th.Property(
@@ -241,10 +244,25 @@ class Tags(StackExchangeStream):
         th.Property("is_moderator_only", th.BooleanType),
         th.Property("is_required", th.BooleanType),
         th.Property("count", th.IntegerType),
+        th.Property("last_activity_date", th.IntegerType),
     ).to_dict()
 
+    def post_process(self, row: dict, context: dict | None = None) -> dict | None:
+        """Post process row.
 
-class TopAskers(StackExchangeStream):
+        Args:
+            row: Row from response.
+            context: Stream sync context.
+
+        Returns:
+            Transformed row.
+        """
+        if "last_activity_date" not in row:
+            row["last_activity_date"] = 0
+        return row
+
+
+class TopAskers(TagPartitionedStream):
     """Top askers for a tag."""
 
     name = "top_askers"
@@ -276,7 +294,7 @@ class TopAskers(StackExchangeStream):
             record["idx"] = idx
             yield record
 
-    def post_process(self, row: dict, context: Optional[dict] = None) -> Optional[dict]:
+    def post_process(self, row: dict, context: dict | None = None) -> dict | None:
         """Process record before writing it to stdout.
 
         Args:
@@ -299,7 +317,7 @@ class TopAnswerers(TopAskers):
     path = "/tags/{tag}/top-answerers/all_time"
 
 
-class TagSynonyms(StackExchangeStream):
+class TagSynonyms(TagPartitionedStream):
     """Tag synonyms."""
 
     name = "tag_synonyms"

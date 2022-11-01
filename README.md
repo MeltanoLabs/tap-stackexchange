@@ -27,6 +27,36 @@ Built with the [Meltano SDK](https://sdk.meltano.com) for Singer Taps and Target
 
 A full list of supported settings and capabilities is available by running: `tap-stackexchange --about`
 
+## Custom filter
+
+The StackExchange API supports a number of [custom filters](https://api.stackexchange.com/docs/filters) that can be used to
+include or exclude certain fields from the response objects. This application has a baked-in filter with the following
+parameters:
+
+- `include`
+
+  | Parameter                | Description                              |
+  |:-------------------------|:-----------------------------------------|
+  | `question.comment_count` | The number of comments on the question   |
+  | `tag.last_activity_date` | The date of the last activity on the tag |
+
+- `unsafe=false`
+
+### Update the baked-in filter
+
+To update the baked-in filter, edit the `FILTER_ID` constant in `tap_stackexchange/tap.py`.
+
+To generate a new filter, use the _Try It_ button on the [StackExchange API documentation](https://api.stackexchange.com/docs/create-filter), using the baked-in filter as the `base` parameter.
+
+### Use a custom filter
+
+To use a custom filter, set the `filter` setting to the filter ID. Note that if you use a custom filter, you will need to
+use a custom catalog that includes the fields you want to sync. That is you will need to
+
+1. Write the default catalog to a file: `tap-stackexchange --discover > catalog.json`
+2. Edit the catalog file to include the fields not included by the default API filter
+3. Run the tap with the custom catalog: `tap-stackexchange --config config.json --catalog catalog.json`
+
 ## Installation
 
 ```bash
