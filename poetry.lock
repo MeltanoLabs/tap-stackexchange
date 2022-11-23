@@ -377,7 +377,7 @@ diagrams = ["jinja2", "railroad-diagrams"]
 
 [[package]]
 name = "pyrate-limiter"
-version = "2.8.3"
+version = "2.8.4"
 description = "Python Rate-Limiter using Leaky-Bucket Algorithm"
 category = "main"
 optional = false
@@ -684,7 +684,7 @@ testing = ["func-timeout", "jaraco.itertools", "pytest (>=6)", "pytest-black (>=
 [metadata]
 lock-version = "1.1"
 python-versions = "<3.11,>=3.7.1"
-content-hash = "c163dc9cdc189447ce6c01f441ee8fa48602233aa1a2fe43e3fd30d76ef050fc"
+content-hash = "56dacc11211057ba933a3433d96ad52b6161561617e476fbf90c6703eab260d6"
 
 [metadata.files]
 appdirs = [
@@ -1001,7 +1001,8 @@ pyparsing = [
     {file = "pyparsing-3.0.9.tar.gz", hash = "sha256:2b020ecf7d21b687f219b71ecad3631f644a47f01403fa1d1036b0c6416d70fb"},
 ]
 pyrate-limiter = [
-    {file = "pyrate_limiter-2.8.3.tar.gz", hash = "sha256:9f464ed01fa647d4d1f32ce27b8db9d594ab787847ec4ae72e1f5498756dd33d"},
+    {file = "pyrate_limiter-2.8.4-py3-none-any.whl", hash = "sha256:447e8199a9a4ba55ea9f1fc3348ea77b4cee5da7735c385ee48c17f71bbb9592"},
+    {file = "pyrate_limiter-2.8.4.tar.gz", hash = "sha256:142c86c07f5882dc3c7b8b7c8681f04f258a875735534baac5d8a2eab06398c6"},
 ]
 pyrsistent = [
     {file = "pyrsistent-0.18.1-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:df46c854f490f81210870e509818b729db4488e1f30f2a1ce1698b2295a878d1"},
