@@ -6,7 +6,6 @@ jobs:
   tests:
     runs-on: ubuntu-latest
     env:
-      SETUPTOOLS_USE_DISTUTILS: stdlib
       PIP_CONSTRAINT: .github/workflows/constraints.txt
     strategy:
       matrix:
@@ -39,7 +38,6 @@ jobs:
     - name: Install tox
       run: |
         pipx install tox
-        pipx inject tox tox-poetry
         tox --version
 
     - name: Run lint command from tox.ini
