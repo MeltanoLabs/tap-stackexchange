@@ -41,5 +41,7 @@ jobs:
         tox --version
 
     - name: Run lint command from tox.ini
+      env:
+        TAP_STACKEXCHANGE_KEY: ${{ secrets.TAP_STACKEXCHANGE_KEY }}
       run: |
         tox -e ${{ matrix.session }}
