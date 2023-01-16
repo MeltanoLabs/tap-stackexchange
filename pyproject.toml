@@ -12,7 +12,7 @@ license = "Apache 2.0"
 [tool.poetry.dependencies]
 python = "<3.11,>=3.7.1"
 pyrate-limiter = "^2.8.5"
-requests-cache = "==0.9.7"
+requests-cache = "==0.9.8"
 singer-sdk = "^0.17.0"
 
 [tool.poetry.dev-dependencies]
