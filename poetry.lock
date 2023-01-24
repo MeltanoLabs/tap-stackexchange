@@ -569,7 +569,7 @@ testing = ["pytest (>=7.2.0,<8.0.0)", "pytest-durations (>=1.2.0,<2.0.0)"]
 type = "git"
 url = "https://github.com/meltano/sdk.git"
 reference = "kgpayne/issue1169"
-resolved_reference = "25e0d4f728e08dd46b2e471d41c0368f8c319994"
+resolved_reference = "bc610535428e07d9b2b07c3c909469225b0ae4b1"
 
 [[package]]
 name = "six"
