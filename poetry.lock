@@ -686,14 +686,14 @@ tests = ["coverage[toml] (==5.0.4)", "pytest (>=6.0.0,<7.0.0)"]
 
 [[package]]
 name = "pyrate-limiter"
-version = "2.8.5"
+version = "2.9.0"
 description = "Python Rate-Limiter using Leaky-Bucket Algorithm"
 category = "main"
 optional = false
 python-versions = ">=3.7,<4.0"
 files = [
-    {file = "pyrate_limiter-2.8.5-py3-none-any.whl", hash = "sha256:dc53539f571c27b70ebb43908d7ae8595806755d7e87adbf5dc29f76f6025525"},
-    {file = "pyrate_limiter-2.8.5.tar.gz", hash = "sha256:8ef17aa816b8583ddd6a74ceac1a6a930dbc1f80f0a8d0ddcdca0e87e531d08a"},
+    {file = "pyrate_limiter-2.9.0-py3-none-any.whl", hash = "sha256:90bc85de0739cbda32bc80b9df19a8307150c0b503d4d22fc31e2135d7d9524d"},
+    {file = "pyrate_limiter-2.9.0.tar.gz", hash = "sha256:a5ca4f53723cd1c565ae25654b1ee22ca221d904270cb13361e1d7c5ce34f4b4"},
 ]
 
 [package.extras]
@@ -1265,4 +1265,4 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "2.0"
 python-versions = "<3.11,>=3.7.1"
-content-hash = "337e32f269978d54d6415208e066cd26c24839a249d8ea7a6b39a99feba709fe"
+content-hash = "ac6f25332d412bf68b575e4d292331d15344e4951bda05c4569f323359034591"
