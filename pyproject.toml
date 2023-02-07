@@ -10,15 +10,13 @@ keywords = [
 license = "Apache 2.0"
 
 [tool.poetry.dependencies]
-python = "<3.11,>=3.7.1"
-pyrate-limiter = "^2.8.5"
+python = "<3.12,>=3.7.1"
+pyrate-limiter = "^2.9.0"
 requests-cache = "==0.9.8"
 singer-sdk = "^0.19.0"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 pytest = "^7.2.1"
-mypy = "^0.991"
-types-requests = "^2.28.11"
 
 [tool.black]
 line-length = 88
