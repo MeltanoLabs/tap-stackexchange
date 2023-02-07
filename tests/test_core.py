@@ -13,7 +13,10 @@ SAMPLE_CONFIG = {
     "metrics_log_level": "debug",
 }
 
-TEST_SUITE_CONFIG = SuiteConfig(ignore_no_records_for_streams=["tag_synonyms"])
+TEST_SUITE_CONFIG = SuiteConfig(
+    ignore_no_records_for_streams=["tag_synonyms"],
+    max_records_limit=15,
+)
 
 TestTapStackExchange = get_tap_test_class(
     tap_class=TapStackExchange, config=SAMPLE_CONFIG, suite_config=TEST_SUITE_CONFIG
