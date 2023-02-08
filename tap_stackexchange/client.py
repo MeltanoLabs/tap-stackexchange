@@ -166,6 +166,10 @@ class StackExchangeStream(RESTStream):
 
         Yields:
             One item per (possibly processed) record in the API.
+
+        Raises:
+            StopIteration: When there are no more records, or when _MAX_RECORDS_LIMIT
+                has been reached.
         """
         for index, record in enumerate(self.request_records(context)):
             transformed_record = self.post_process(record, context)
@@ -173,7 +177,7 @@ class StackExchangeStream(RESTStream):
                 # Record filtered out during post_process()
                 continue
             # if we have reached the max records limit, return early
-            if self._MAX_RECORDS_LIMIT and index >= self._MAX_RECORDS_LIMIT:
+            if self._MAX_RECORDS_LIMIT and (index + 1) >= self._MAX_RECORDS_LIMIT:
                 raise StopIteration
             yield transformed_record
 
