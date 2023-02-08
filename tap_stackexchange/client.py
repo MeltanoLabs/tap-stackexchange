@@ -175,15 +175,13 @@ class StackExchangeStream(RESTStream):
                 continue
 
             if (
-                self._MAX_RECORDS_LIMIT
-                and index < self._MAX_RECORDS_LIMIT
-                or not self._MAX_RECORDS_LIMIT
-            ):
-                index += 1
+                self._MAX_RECORDS_LIMIT and index < self._MAX_RECORDS_LIMIT
+            ) or self._MAX_RECORDS_LIMIT is None:
                 yield transformed_record
+                index += 1
             else:
                 # if we have reached the max records limit, return early
-                break
+                return
 
 
 class TagPartitionedStream(StackExchangeStream):
