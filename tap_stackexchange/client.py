@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import logging
-from typing import Any, Callable
+from typing import Any, Callable, Iterable
 
 import requests
 from pyrate_limiter import BucketFullException, Duration, Limiter, RequestRate
@@ -154,6 +154,28 @@ class StackExchangeStream(RESTStream):
             return previous_token + 1
         else:
             return None
+
+    # overridden to test _MAX_RECORDS_LIMIT
+    def get_records(self, context: dict | None) -> Iterable[dict[str, Any]]:
+        """Return a generator of record-type dictionary objects.
+
+        Each record emitted should be a dictionary of property names to their values.
+
+        Args:
+            context: Stream partition or context dictionary.
+
+        Yields:
+            One item per (possibly processed) record in the API.
+        """
+        for index, record in enumerate(self.request_records(context)):
+            transformed_record = self.post_process(record, context)
+            if transformed_record is None:
+                # Record filtered out during post_process()
+                continue
+            # if we have reached the max records limit, return early
+            if self._MAX_RECORDS_LIMIT and index >= self._MAX_RECORDS_LIMIT:
+                raise StopIteration
+            yield transformed_record
 
 
 class TagPartitionedStream(StackExchangeStream):
