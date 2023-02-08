@@ -174,12 +174,16 @@ class StackExchangeStream(RESTStream):
                 # Record filtered out during post_process()
                 continue
 
-            if self._MAX_RECORDS_LIMIT and index >= self._MAX_RECORDS_LIMIT:
+            if (
+                self._MAX_RECORDS_LIMIT
+                and index < self._MAX_RECORDS_LIMIT
+                or not self._MAX_RECORDS_LIMIT
+            ):
+                index += 1
+                yield transformed_record
+            else:
                 # if we have reached the max records limit, return early
                 break
-
-            yield transformed_record
-            index += 1
 
 
 class TagPartitionedStream(StackExchangeStream):
