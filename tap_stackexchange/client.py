@@ -166,20 +166,20 @@ class StackExchangeStream(RESTStream):
 
         Yields:
             One item per (possibly processed) record in the API.
-
-        Raises:
-            StopIteration: When there are no more records, or when _MAX_RECORDS_LIMIT
-                has been reached.
         """
-        for index, record in enumerate(self.request_records(context)):
+        index = 1
+        for record in self.request_records(context):
             transformed_record = self.post_process(record, context)
             if transformed_record is None:
                 # Record filtered out during post_process()
                 continue
-            # if we have reached the max records limit, return early
-            if self._MAX_RECORDS_LIMIT and (index + 1) >= self._MAX_RECORDS_LIMIT:
-                raise StopIteration
+
+            if self._MAX_RECORDS_LIMIT and index >= self._MAX_RECORDS_LIMIT:
+                # if we have reached the max records limit, return early
+                break
+
             yield transformed_record
+            index += 1
 
 
 class TagPartitionedStream(StackExchangeStream):
