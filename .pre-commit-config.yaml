@@ -1,5 +1,8 @@
 ci:
-  autofix_prs: false
+  autofix_commit_msg: '[pre-commit.ci] auto fixes'
+  autofix_prs: true
+  autoupdate_schedule: weekly
+  autoupdate_commit_msg: 'chore(deps): pre-commit autoupdate'
 
 repos:
 - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -45,6 +48,6 @@ repos:
     args: [--py37-plus]
 
 - repo: https://github.com/pre-commit/pre-commit
-  rev: v3.0.4
+  rev: v3.1.0
   hooks:
   - id: validate_manifest
