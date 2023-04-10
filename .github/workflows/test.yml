@@ -2,6 +2,10 @@ name: Test tap-stackexchange
 
 on: [push]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
 jobs:
   tests:
     runs-on: ubuntu-latest
@@ -36,5 +40,7 @@ jobs:
         tox --version
 
     - name: Run lint command from tox.ini
+      env:
+        TAP_STACKEXCHANGE_KEY: ${{ secrets.TAP_STACKEXCHANGE_KEY }}
       run: |
         tox -e pytest
