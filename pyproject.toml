@@ -2,7 +2,7 @@
 name = "tap-stackexchange"
 version = "0.0.1"
 description = "`tap-stackexchange` is a Singer tap for StackExchange, built with the Meltano SDK for Singer Taps."
-authors = ["Edgar Ramírez-Mondragón"]
+authors = ["Edgar Ramírez-Mondragón <edgarrm358@gmail.com>"]
 keywords = [
     "ELT",
     "StackExchange",
@@ -42,3 +42,16 @@ build-backend = "poetry.core.masonry.api"
 [tool.poetry.scripts]
 # CLI declaration
 tap-stackexchange = 'tap_stackexchange.tap:TapStackExchange.cli'
+
+[tool.ruff]
+ignore = [
+    "ANN101",  # missing-type-self
+]
+select = ["ALL"]
+target-version = "py37"
+
+[tool.ruff.flake8-annotations]
+allow-star-arg-any = true
+
+[tool.ruff.pydocstyle]
+convention = "google"
