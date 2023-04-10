@@ -1,5 +1,8 @@
 ci:
-  autofix_prs: false
+  autofix_commit_msg: '[pre-commit.ci] auto fixes'
+  autofix_prs: true
+  autoupdate_schedule: weekly
+  autoupdate_commit_msg: 'chore(deps): pre-commit autoupdate'
 
 repos:
 - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -12,12 +15,12 @@ repos:
   - id: trailing-whitespace
 
 - repo: https://github.com/psf/black
-  rev: 23.1.0
+  rev: 23.3.0
   hooks:
   - id: black
 
 - repo: https://github.com/pre-commit/mirrors-mypy
-  rev: v1.0.0
+  rev: v1.2.0
   hooks:
   - id: mypy
     pass_filenames: true
@@ -45,6 +48,6 @@ repos:
     args: [--py37-plus]
 
 - repo: https://github.com/pre-commit/pre-commit
-  rev: v3.0.4
+  rev: v3.2.2
   hooks:
   - id: validate_manifest

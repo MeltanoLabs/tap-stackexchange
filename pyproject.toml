@@ -11,12 +11,12 @@ license = "Apache 2.0"
 
 [tool.poetry.dependencies]
 python = "<3.12,>=3.7.1"
-pyrate-limiter = "^2.9.0"
-requests-cache = "==0.9.8"
-singer-sdk = {git = "https://github.com/meltano/sdk", rev = "kgpayne/apply-max-records-limit-during-testing", extras = ["testing"]}
+pyrate-limiter = "^2.10.0"
+requests-cache = "==1.0.1"
+singer-sdk = "^0.23.0"
 
 [tool.poetry.group.dev.dependencies]
-pytest = "^7.2.1"
+singer-sdk = {extras = ["testing"], version = ">=0.23.0"}
 
 [tool.black]
 line-length = 88
