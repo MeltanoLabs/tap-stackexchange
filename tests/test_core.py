@@ -19,5 +19,7 @@ TEST_SUITE_CONFIG = SuiteConfig(
 )
 
 TestTapStackExchange = get_tap_test_class(
-    tap_class=TapStackExchange, config=SAMPLE_CONFIG, suite_config=TEST_SUITE_CONFIG
+    tap_class=TapStackExchange,
+    config=SAMPLE_CONFIG,
+    suite_config=TEST_SUITE_CONFIG,
 )
