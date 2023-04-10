@@ -2,14 +2,17 @@
 
 from __future__ import annotations
 
+import json
 import logging
-from typing import Any, Callable
+from typing import TYPE_CHECKING, Any, Callable
 
-import requests
 from pyrate_limiter import BucketFullException, Duration, Limiter, RequestRate
 from requests_cache import install_cache
 from singer_sdk.exceptions import RetriableAPIError
 from singer_sdk.streams import RESTStream
+
+if TYPE_CHECKING:
+    import requests
 
 logger = logging.getLogger(__name__)
 
@@ -25,7 +28,7 @@ def has_backoff(response: requests.Response) -> bool:
     """
     try:
         return "backoff" in response.json()
-    except Exception:
+    except json.JSONDecodeError:
         return False
 
 
@@ -136,8 +139,10 @@ class StackExchangeStream(RESTStream):
         return params
 
     def get_next_page_token(
-        self, response: requests.Response, previous_token: Any | None
-    ) -> Any:
+        self,
+        response: requests.Response,
+        previous_token: Any | None,
+    ) -> int | None:
         """Get next page index from response.
 
         Args:
@@ -152,8 +157,8 @@ class StackExchangeStream(RESTStream):
 
         if has_more:
             return previous_token + 1
-        else:
-            return None
+
+        return None
 
 
 class TagPartitionedStream(StackExchangeStream):

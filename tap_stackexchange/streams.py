@@ -2,12 +2,14 @@
 
 from __future__ import annotations
 
-from typing import Any, Generator
+from typing import TYPE_CHECKING, Any, Generator
 
-import requests
 from singer_sdk import typing as th
 
 from tap_stackexchange.client import StackExchangeStream, TagPartitionedStream
+
+if TYPE_CHECKING:
+    import requests
 
 SHALLOW_USER = th.ObjectType(
     th.Property("accept_rate", th.IntegerType),
@@ -41,7 +43,7 @@ SITE = th.ObjectType(
                 th.Property("name", th.StringType),
                 th.Property("relation", th.StringType),
                 th.Property("site_url", th.StringType),
-            )
+            ),
         ),
     ),
     th.Property("site_state", th.StringType),
@@ -106,7 +108,9 @@ class Questions(TagPartitionedStream):
     ).to_dict()
 
     def get_url_params(
-        self, context: dict | None, next_page_token: Any | None
+        self,
+        context: dict | None,
+        next_page_token: Any | None,
     ) -> dict[str, Any]:
         """Get URL query parameters.
 
@@ -121,7 +125,11 @@ class Questions(TagPartitionedStream):
         params["tagged"] = context["tag"] if context else None
         return params
 
-    def get_child_context(self, record: dict, context: dict | None) -> dict:
+    def get_child_context(
+        self,
+        record: dict,
+        context: dict | None,  # noqa: ARG002
+    ) -> dict:
         """Get context dictionary for child streams.
 
         Args:
@@ -173,14 +181,14 @@ class QuestionAnswers(TagPartitionedStream):
                             th.ObjectType(
                                 th.Property("type", th.StringType),
                                 th.Property("link", th.StringType),
-                            )
+                            ),
                         ),
                     ),
                     th.Property("link", th.StringType),
                     th.Property("name", th.StringType),
                     th.Property("slug", th.StringType),
                     th.Property("tags", th.ArrayType(th.StringType)),
-                )
+                ),
             ),
         ),
         th.Property("score", th.IntegerType),
@@ -209,7 +217,9 @@ class QuestionComments(TagPartitionedStream):
     ).to_dict()
 
     def get_url_params(
-        self, context: dict | None, next_page_token: Any | None
+        self,
+        context: dict | None,
+        next_page_token: Any | None,
     ) -> dict[str, Any]:
         """Get URL query parameters.
 
@@ -247,7 +257,11 @@ class Tags(StackExchangeStream):
         th.Property("last_activity_date", th.IntegerType),
     ).to_dict()
 
-    def post_process(self, row: dict, context: dict | None = None) -> dict | None:
+    def post_process(
+        self,
+        row: dict,
+        context: dict | None = None,  # noqa: ARG002
+    ) -> dict | None:
         """Post process row.
 
         Args:
@@ -279,7 +293,8 @@ class TopAskers(TagPartitionedStream):
     ).to_dict()
 
     def parse_response(
-        self, response: requests.Response
+        self,
+        response: requests.Response,
     ) -> Generator[dict, None, None]:
         """Process records in response.
 
@@ -305,8 +320,8 @@ class TopAskers(TagPartitionedStream):
             A dictionary with the new record.
         """
         updated_row = super().post_process(row, context)
-        if updated_row is not None:
-            updated_row["tag"] = context["tag"]  # type: ignore
+        if updated_row is not None and context:
+            updated_row["tag"] = context["tag"]
         return updated_row
 
 
