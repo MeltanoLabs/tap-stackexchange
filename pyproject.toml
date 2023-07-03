@@ -11,9 +11,9 @@ license = "Apache 2.0"
 
 [tool.poetry.dependencies]
 python = "<3.12,>=3.7.1"
-pyrate-limiter = "^2.10.0"
-requests-cache = "==1.0.1"
-singer-sdk = "0.28.0"
+pyrate-limiter = "==2.*"
+requests-cache = "==1.*"
+singer-sdk = "0.28.*"
 
 [tool.poetry.group.dev.dependencies]
 singer-sdk = {extras = ["testing"], version = ">=0.23.0"}
