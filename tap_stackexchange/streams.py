@@ -2,13 +2,13 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Generator
+import typing as t
 
 from singer_sdk import typing as th
 
 from tap_stackexchange.client import StackExchangeStream, TagPartitionedStream
 
-if TYPE_CHECKING:
+if t.TYPE_CHECKING:
     import requests
 
 SHALLOW_USER = th.ObjectType(
@@ -66,7 +66,7 @@ class Questions(TagPartitionedStream):
 
     name = "questions"
     path = "/questions"
-    primary_keys = ["question_id"]
+    primary_keys: t.ClassVar[list[str]] = ["question_id"]
     replication_key = "last_activity_date"
 
     schema = th.PropertiesList(
@@ -110,8 +110,8 @@ class Questions(TagPartitionedStream):
     def get_url_params(
         self,
         context: dict | None,
-        next_page_token: Any | None,
-    ) -> dict[str, Any]:
+        next_page_token: t.Any | None,
+    ) -> dict[str, t.Any]:
         """Get URL query parameters.
 
         Args:
@@ -147,7 +147,7 @@ class QuestionAnswers(TagPartitionedStream):
 
     name = "answers"
     path = "/questions/{question_id}/answers"
-    primary_keys = ["answer_id"]
+    primary_keys: t.ClassVar[list[str]] = ["answer_id"]
     replication_key = "last_activity_date"
     parent_stream_type = Questions
 
@@ -201,7 +201,7 @@ class QuestionComments(TagPartitionedStream):
 
     name = "question_comments"
     path = "/questions/{question_id}/comments"
-    primary_keys = ["comment_id"]
+    primary_keys: t.ClassVar[list[str]] = ["comment_id"]
     replication_key = "creation_date"
     parent_stream_type = Questions
 
@@ -219,8 +219,8 @@ class QuestionComments(TagPartitionedStream):
     def get_url_params(
         self,
         context: dict | None,
-        next_page_token: Any | None,
-    ) -> dict[str, Any]:
+        next_page_token: t.Any | None,
+    ) -> dict[str, t.Any]:
         """Get URL query parameters.
 
         Args:
@@ -240,7 +240,7 @@ class Tags(StackExchangeStream):
 
     name = "tags"
     path = "/tags"
-    primary_keys = ["name"]
+    primary_keys: t.ClassVar[list[str]] = ["name"]
     replication_key = "last_activity_date"
 
     schema = th.PropertiesList(
@@ -281,7 +281,7 @@ class TopAskers(TagPartitionedStream):
 
     name = "top_askers"
     path = "/tags/{tag}/top-askers/all_time"
-    primary_keys = ["idx", "tag"]
+    primary_keys: t.ClassVar[list[str]] = ["idx", "tag"]
     replication_key = None
 
     schema = th.PropertiesList(
@@ -295,7 +295,7 @@ class TopAskers(TagPartitionedStream):
     def parse_response(
         self,
         response: requests.Response,
-    ) -> Generator[dict, None, None]:
+    ) -> t.Generator[dict, None, None]:
         """Process records in response.
 
         Args:
@@ -337,7 +337,7 @@ class TagSynonyms(TagPartitionedStream):
 
     name = "tag_synonyms"
     path = "/tags/{tag}/synonyms"
-    primary_keys = ["from_tag", "to_tag"]
+    primary_keys: t.ClassVar[list[str]] = ["from_tag", "to_tag"]
     replication_key = "creation_date"
 
     schema = th.PropertiesList(

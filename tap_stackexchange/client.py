@@ -4,14 +4,14 @@ from __future__ import annotations
 
 import json
 import logging
-from typing import TYPE_CHECKING, Any, Callable
+import typing as t
 
 from pyrate_limiter import BucketFullException, Duration, Limiter, RequestRate
 from requests_cache import install_cache
 from singer_sdk.exceptions import RetriableAPIError
 from singer_sdk.streams import RESTStream
 
-if TYPE_CHECKING:
+if t.TYPE_CHECKING:
     import requests
 
 logger = logging.getLogger(__name__)
@@ -42,7 +42,7 @@ class StackExchangeStream(RESTStream):
 
     PAGE_SIZE = 100
     METRICS_LOG_LEVEL_SETTING = "DEBUG"
-    CUSTOM_FILTER_INCLUDE = [
+    CUSTOM_FILTER_INCLUDE: t.ClassVar[list[str]] = [
         "question.comment_count",
         "tag.last_activity_date",
     ]
@@ -50,9 +50,9 @@ class StackExchangeStream(RESTStream):
     url_base = "https://api.stackexchange.com/2.3"
     records_jsonpath = "$.items[*]"
 
-    rate_limit_response_codes: list[int] = []
+    rate_limit_response_codes: t.ClassVar[list[int]] = []
 
-    def __init__(self, *args: Any, **kwargs: Any) -> None:
+    def __init__(self, *args: t.Any, **kwargs: t.Any) -> None:
         """Initialize the stream.
 
         Args:
@@ -73,7 +73,7 @@ class StackExchangeStream(RESTStream):
             headers["User-Agent"] = self.config.get("user_agent")
         return headers
 
-    def request_decorator(self, func: Callable) -> Callable:
+    def request_decorator(self, func: t.Callable) -> t.Callable:
         """Decorate the request method of the stream.
 
         Args:
@@ -108,8 +108,8 @@ class StackExchangeStream(RESTStream):
     def get_url_params(
         self,
         context: dict | None,
-        next_page_token: Any | None,
-    ) -> dict[str, Any]:
+        next_page_token: t.Any | None,
+    ) -> dict[str, t.Any]:
         """Return a dictionary of values to be used in URL parameterization.
 
         Args:
@@ -141,7 +141,7 @@ class StackExchangeStream(RESTStream):
     def get_next_page_token(
         self,
         response: requests.Response,
-        previous_token: Any | None,
+        previous_token: t.Any | None,
     ) -> int | None:
         """Get next page index from response.
 
