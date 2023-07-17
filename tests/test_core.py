@@ -1,4 +1,5 @@
 """Tests standard tap features using the built-in SDK tests library."""
+from __future__ import annotations
 
 from singer_sdk.testing import SuiteConfig, get_tap_test_class
 
