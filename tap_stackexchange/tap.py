@@ -1,6 +1,5 @@
 """StackExchange tap class."""
-
-from typing import List
+from __future__ import annotations
 
 from singer_sdk import Stream, Tap
 from singer_sdk import typing as th
@@ -58,7 +57,7 @@ class TapStackExchange(Tap):
         ),
     ).to_dict()
 
-    def discover_streams(self) -> List[Stream]:
+    def discover_streams(self) -> list[Stream]:
         """Return a list of discovered streams.
 
         Returns:

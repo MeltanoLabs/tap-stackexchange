@@ -21,11 +21,6 @@ singer-sdk = {extras = ["testing"], version = ">=0.23.0"}
 [tool.black]
 line-length = 88
 
-[tool.isort]
-profile = "black"
-multi_line_output = 3 # Vertical Hanging Indent
-src_paths = "tap_stackexchange"
-
 [tool.pytest.ini_options]
 addopts = "-vvv"
 
@@ -52,6 +47,10 @@ target-version = "py37"
 
 [tool.ruff.flake8-annotations]
 allow-star-arg-any = true
+
+[tool.ruff.isort]
+known-first-party = ["tap_stackexchange"]
+required-imports = ["from __future__ import annotations"]
 
 [tool.ruff.pydocstyle]
 convention = "google"
