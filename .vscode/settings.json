@@ -1,6 +1,11 @@
 {
   "python.formatting.provider": "black",
-  "cSpell.words": ["jsonl", "stackexchange", "stackoverflow"],
+  "cSpell.words": [
+    "jsonl",
+    "pyrate",
+    "stackexchange",
+    "stackoverflow"
+  ],
   "python.testing.pytestArgs": ["tests"],
   "python.testing.unittestEnabled": false,
   "python.testing.pytestEnabled": true

@@ -110,7 +110,7 @@ class Questions(TagPartitionedStream):
     def get_url_params(
         self,
         context: dict | None,
-        next_page_token: t.Any | None,
+        next_page_token: int | None,
     ) -> dict[str, t.Any]:
         """Get URL query parameters.
 
@@ -219,7 +219,7 @@ class QuestionComments(TagPartitionedStream):
     def get_url_params(
         self,
         context: dict | None,
-        next_page_token: t.Any | None,
+        next_page_token: int | None,
     ) -> dict[str, t.Any]:
         """Get URL query parameters.
 

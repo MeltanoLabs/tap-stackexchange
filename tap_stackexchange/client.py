@@ -108,7 +108,7 @@ class StackExchangeStream(RESTStream):
     def get_url_params(
         self,
         context: dict | None,
-        next_page_token: t.Any | None,
+        next_page_token: int | None,
     ) -> dict[str, t.Any]:
         """Return a dictionary of values to be used in URL parameterization.
 
@@ -141,7 +141,7 @@ class StackExchangeStream(RESTStream):
     def get_next_page_token(
         self,
         response: requests.Response,
-        previous_token: t.Any | None,
+        previous_token: int | None,
     ) -> int | None:
         """Get next page index from response.
 
