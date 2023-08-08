@@ -9,6 +9,7 @@ import typing as t
 from pyrate_limiter import BucketFullException, Duration, Limiter, RequestRate
 from requests_cache import install_cache
 from singer_sdk.exceptions import RetriableAPIError
+from singer_sdk.pagination import BasePageNumberPaginator
 from singer_sdk.streams import RESTStream
 
 if t.TYPE_CHECKING:
@@ -35,6 +36,21 @@ def has_backoff(response: requests.Response) -> bool:
 install_cache(expire_after=3600, filter_fn=lambda r: not has_backoff(r))  # 1 hour
 rate = RequestRate(100, Duration.MINUTE)
 limiter = Limiter(rate)
+
+
+class StackExchangePaginator(BasePageNumberPaginator):
+    """StackExchange paginator class."""
+
+    def has_more(self, response: requests.Response) -> bool:
+        """Check if there are more pages to retrieve.
+
+        Args:
+            response: HTTP response.
+
+        Returns:
+            True if there are more pages to retrieve.
+        """
+        return response.json()["has_more"]
 
 
 class StackExchangeStream(RESTStream):
@@ -138,27 +154,13 @@ class StackExchangeStream(RESTStream):
 
         return params
 
-    def get_next_page_token(
-        self,
-        response: requests.Response,
-        previous_token: int | None,
-    ) -> int | None:
-        """Get next page index from response.
-
-        Args:
-            response: HTTP response.
-            previous_token: Previous pagination token.
+    def get_new_paginator(self) -> StackExchangePaginator:
+        """Return a new paginator instance.
 
         Returns:
-            Next pagination token.
+            Paginator instance.
         """
-        has_more = response.json()["has_more"]
-        previous_token = previous_token or 1
-
-        if has_more:
-            return previous_token + 1
-
-        return None
+        return StackExchangePaginator(start_value=1)
 
 
 class TagPartitionedStream(StackExchangeStream):
