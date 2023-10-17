@@ -6,7 +6,7 @@ import json
 import logging
 import typing as t
 
-from pyrate_limiter import BucketFullException, Duration, Limiter, RequestRate
+from pyrate_limiter import BucketFullException, Duration, Limiter, Rate
 from requests_cache import install_cache
 from singer_sdk.exceptions import RetriableAPIError
 from singer_sdk.pagination import BasePageNumberPaginator
@@ -34,8 +34,8 @@ def has_backoff(response: requests.Response) -> bool:
 
 
 install_cache(expire_after=3600, filter_fn=lambda r: not has_backoff(r))  # 1 hour
-rate = RequestRate(100, Duration.MINUTE)
-limiter = Limiter(rate)
+rate = Rate(100, Duration.MINUTE)
+limiter = Limiter(rate, max_delay=600)
 
 
 class StackExchangePaginator(BasePageNumberPaginator):
@@ -98,7 +98,10 @@ class StackExchangeStream(RESTStream):
         Returns:
             Decorated method.
         """
-        return limiter.ratelimit(self.tap_name, delay=True, max_delay=600)(func)
+        return limiter.as_decorator()(self._limiter_mapping)(func)
+
+    def _limiter_mapping(self, *_args: t.Any, **_kwargs: t.Any) -> tuple[str, int]:
+        return self.tap_name, 1
 
     def validate_response(self, response: requests.Response) -> None:
         """Validate the HTTP response.
