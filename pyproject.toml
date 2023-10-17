@@ -10,7 +10,7 @@ keywords = [
 license = "Apache 2.0"
 
 [tool.poetry.dependencies]
-python = "<3.12,>=3.7.1"
+python = ">=3.8,<4"
 pyrate-limiter = "==2.*"
 requests-cache = "==1.*"
 singer-sdk = "0.33.*"
@@ -43,7 +43,7 @@ ignore = [
     "ANN101",  # missing-type-self
 ]
 select = ["ALL"]
-target-version = "py37"
+target-version = "py38"
 
 [tool.ruff.flake8-annotations]
 allow-star-arg-any = true
