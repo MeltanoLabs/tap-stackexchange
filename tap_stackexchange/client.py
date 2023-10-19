@@ -6,7 +6,14 @@ import json
 import logging
 import typing as t
 
-from pyrate_limiter import BucketFullException, Duration, Limiter, Rate
+from pyrate_limiter import (
+    Duration,
+    Limiter,
+    LimiterDelayException,
+    Rate,
+    RateItem,
+    TimeClock,
+)
 from requests_cache import install_cache
 from singer_sdk.exceptions import RetriableAPIError
 from singer_sdk.pagination import BasePageNumberPaginator
@@ -16,6 +23,8 @@ if t.TYPE_CHECKING:
     import requests
 
 logger = logging.getLogger(__name__)
+
+BASE_URL = "https://api.stackexchange.com/2.3"
 
 
 def has_backoff(response: requests.Response) -> bool:
@@ -35,7 +44,7 @@ def has_backoff(response: requests.Response) -> bool:
 
 install_cache(expire_after=3600, filter_fn=lambda r: not has_backoff(r))  # 1 hour
 rate = Rate(100, Duration.MINUTE)
-limiter = Limiter(rate, max_delay=600)
+limiter = Limiter(rate, max_delay=100_000)
 
 
 class StackExchangePaginator(BasePageNumberPaginator):
@@ -63,19 +72,29 @@ class StackExchangeStream(RESTStream):
         "tag.last_activity_date",
     ]
 
-    url_base = "https://api.stackexchange.com/2.3"
     records_jsonpath = "$.items[*]"
 
     rate_limit_response_codes: t.ClassVar[list[int]] = []
 
-    def __init__(self, *args: t.Any, **kwargs: t.Any) -> None:
+    def __init__(self, *args: t.Any, base_url: str = BASE_URL, **kwargs: t.Any) -> None:
         """Initialize the stream.
 
         Args:
             *args: Positional arguments for RESTStream.
+            base_url: Base URL for the API.
             **kwargs: Keyword arguments for RESTStream.
         """
+        self.base_url = base_url
         super().__init__(*args, **kwargs)
+
+    @property
+    def url_base(self) -> str:
+        """API base URL.
+
+        Returns:
+            Base URL.
+        """
+        return self.base_url
 
     @property
     def http_headers(self) -> dict:
@@ -110,19 +129,38 @@ class StackExchangeStream(RESTStream):
             response: HTTP response.
 
         Raises:
-            BucketFullException: if a backoff amount is returned with the response
+            LimiterDelayException: if a backoff amount is returned with the response
                 or any other recoverable error occurs.
         """
         if has_backoff(response):
             self.logger.info(response.text)
             backoff = response.json()["backoff"]
             self.logger.info("BACKOFF: %s", backoff)
-            raise BucketFullException(self.tap_name, rate, backoff)
+            clock = TimeClock()
+            raise LimiterDelayException(
+                item=RateItem(
+                    self.tap_name,
+                    clock.now(),
+                ),
+                rate=rate,
+                actual_delay=backoff,
+                max_delay=100_000,
+            )
 
         try:
             super().validate_response(response)
         except RetriableAPIError as exc:
-            raise BucketFullException(self.tap_name, rate, 5) from exc
+            self.logger.info("TEXT: %s", response.text)
+            clock = TimeClock()
+            raise LimiterDelayException(
+                item=RateItem(
+                    self.tap_name,
+                    clock.now(),
+                ),
+                rate=rate,
+                actual_delay=5_000,
+                max_delay=100_000,
+            ) from exc
 
     def get_url_params(
         self,
