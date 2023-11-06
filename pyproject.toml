@@ -16,6 +16,7 @@ requests-cache = "==1.*"
 singer-sdk = "0.33.*"
 
 [tool.poetry.group.dev.dependencies]
+pytest-httpserver = "^1.0.8"
 singer-sdk = {extras = ["testing"], version = ">=0.23.0"}
 
 [tool.black]
