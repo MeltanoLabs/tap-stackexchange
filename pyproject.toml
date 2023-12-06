@@ -13,7 +13,7 @@ license = "Apache 2.0"
 python = ">=3.8,<4"
 pyrate-limiter = "==3.*"
 requests-cache = "==1.*"
-singer-sdk = "0.33.*"
+singer-sdk = "0.34.*"
 
 [tool.poetry.group.dev.dependencies]
 pytest-httpserver = "^1.0.8"
