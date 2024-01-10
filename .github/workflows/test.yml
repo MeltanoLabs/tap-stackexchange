@@ -13,7 +13,7 @@ jobs:
       PIP_CONSTRAINT: .github/workflows/constraints.txt
     strategy:
       matrix:
-        python-version: ["3.8", "3.9", "3.10", "3.11"]
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
 
     steps:
     - name: Checkout code
@@ -39,8 +39,8 @@ jobs:
         pipx install tox
         tox --version
 
-    - name: Run lint command from tox.ini
+    - name: Run tests
       env:
         TAP_STACKEXCHANGE_KEY: ${{ secrets.TAP_STACKEXCHANGE_KEY }}
       run: |
-        tox -e pytest
+        tox -e py$(echo ${{ matrix.python-version }} | tr -d .)
