@@ -3,27 +3,30 @@ name = "tap-stackexchange"
 version = "0.0.1"
 description = "`tap-stackexchange` is a Singer tap for StackExchange, built with the Meltano SDK for Singer Taps."
 authors = ["Edgar Ramírez-Mondragón <edgarrm358@gmail.com>"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
 keywords = [
     "ELT",
     "StackExchange",
 ]
-license = "Apache 2.0"
+license = "Apache-2.0"
+readme = "README.md"
 
 [tool.poetry.dependencies]
-python = ">=3.8,<4"
-pyrate-limiter = "==3.*"
-requests-cache = "==1.*"
+python = ">=3.8"
+pyrate-limiter = { version = "==3.*", python = "<4" }
+requests-cache = { version = "==1.*", python = "<4" }
 singer-sdk = "0.34.*"
 
 [tool.poetry.group.dev.dependencies]
-pytest-httpserver = "^1.0.8"
+pytest-httpserver = { version = "^1.0.8", python = "<4" }
 singer-sdk = {extras = ["testing"], version = ">=0.23.0"}
-
-[tool.black]
-line-length = 88
-
-[tool.pytest.ini_options]
-addopts = "-vvv"
 
 [[tool.mypy.overrides]]
 module = [
@@ -32,7 +35,7 @@ module = [
 ignore_missing_imports = true
 
 [build-system]
-requires = ["poetry-core>=1.0.8"]
+requires = ["poetry-core==1.8.1"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
@@ -40,11 +43,14 @@ build-backend = "poetry.core.masonry.api"
 tap-stackexchange = 'tap_stackexchange.tap:TapStackExchange.cli'
 
 [tool.ruff]
+line-length = 88
+target-version = "py38"
+
+[tool.ruff.lint]
 ignore = [
     "ANN101",  # missing-type-self
 ]
 select = ["ALL"]
-target-version = "py38"
 
 [tool.ruff.flake8-annotations]
 allow-star-arg-any = true

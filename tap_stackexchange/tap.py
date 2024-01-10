@@ -47,7 +47,7 @@ class TapStackExchange(Tap):
         th.Property(
             "tags",
             th.ArrayType(th.StringType),
-            default=[],
+            default=["LimeSurvey"],
             description="Question tags",
         ),
         th.Property(
