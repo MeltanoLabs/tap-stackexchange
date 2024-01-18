@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     environment:
-      name: publishing
+      name: pypi
       url: https://pypi.org/project/tap-stackexchange/
     if: startsWith(github.ref, 'refs/tags/')
     steps:
