@@ -49,7 +49,6 @@ tap-stackexchange = 'tap_stackexchange.tap:TapStackExchange.cli'
 
 [tool.poetry-dynamic-versioning]
 enable = true
-metadata = true
 style = "pep440"
 
 [tool.ruff]
