@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tap-stackexchange"
-version = "0.0.1"
+version = "0.0.0"
 description = "`tap-stackexchange` is a Singer tap for StackExchange, built with the Meltano SDK for Singer Taps."
 authors = ["Edgar Ramírez-Mondragón <edgarrm358@gmail.com>"]
 classifiers = [
@@ -13,6 +13,8 @@ classifiers = [
 ]
 keywords = [
     "ELT",
+    "meltano",
+    "singer-io",
     "StackExchange",
 ]
 license = "Apache-2.0"
@@ -35,12 +37,20 @@ module = [
 ignore_missing_imports = true
 
 [build-system]
-requires = ["poetry-core==1.8.1"]
-build-backend = "poetry.core.masonry.api"
+build-backend = "poetry_dynamic_versioning.backend"
+requires = [
+  "poetry-core==1.8.1",
+  "poetry-dynamic-versioning==1.2",
+]
 
 [tool.poetry.scripts]
 # CLI declaration
 tap-stackexchange = 'tap_stackexchange.tap:TapStackExchange.cli'
+
+[tool.poetry-dynamic-versioning]
+enable = true
+metadata = true
+style = "pep440"
 
 [tool.ruff]
 line-length = 88
