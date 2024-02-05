@@ -184,7 +184,7 @@ class StackExchangeStream(RESTStream):
             "filter": self.config["filter"],
         }
 
-        if "key" in self.config and self.config["key"]:
+        if self.config.get("key"):
             params["key"] = self.config["key"]
 
         if next_page_token:
