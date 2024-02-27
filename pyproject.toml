@@ -24,7 +24,7 @@ readme = "README.md"
 python = ">=3.8"
 pyrate-limiter = { version = "==3.*", python = "<4" }
 requests-cache = { version = "==1.*", python = "<4" }
-singer-sdk = ">=0.34,<0.36"
+singer-sdk = ">=0.34,<0.37"
 
 [tool.poetry.group.dev.dependencies]
 pytest-httpserver = { version = "^1.0.8", python = "<4" }
