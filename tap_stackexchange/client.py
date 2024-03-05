@@ -47,21 +47,6 @@ rate = Rate(100, Duration.MINUTE)
 limiter = Limiter(rate, max_delay=100_000)
 
 
-class StackExchangePaginator(BasePageNumberPaginator):
-    """StackExchange paginator class."""
-
-    def has_more(self, response: requests.Response) -> bool:
-        """Check if there are more pages to retrieve.
-
-        Args:
-            response: HTTP response.
-
-        Returns:
-            True if there are more pages to retrieve.
-        """
-        return response.json()["has_more"]
-
-
 class StackExchangeStream(RESTStream):
     """StackExchange stream class."""
 
@@ -73,6 +58,7 @@ class StackExchangeStream(RESTStream):
     ]
 
     records_jsonpath = "$.items[*]"
+    is_sorted = True
 
     rate_limit_response_codes: t.ClassVar[list[int]] = []
 
@@ -195,13 +181,13 @@ class StackExchangeStream(RESTStream):
 
         return params
 
-    def get_new_paginator(self) -> StackExchangePaginator:
+    def get_new_paginator(self) -> BasePageNumberPaginator:
         """Return a new paginator instance.
 
         Returns:
             Paginator instance.
         """
-        return StackExchangePaginator(start_value=1)
+        return BasePageNumberPaginator(start_value=1)
 
 
 class TagPartitionedStream(StackExchangeStream):
