@@ -14,28 +14,29 @@ plugins:
     - name: key
       kind: password
       label: API Key
-      description: StackExchange API Key
       documentation: https://api.stackexchange.com/docs/authentication
+      description: StackExchange API Key
+      sensitive: true
     - name: filter
       kind: string
       label: Filter
-      description: Custom API filter to apply to all requests
       documentation: https://api.stackexchange.com/docs/filters
+      description: Custom API filter to apply to all requests
     - name: site
       kind: string
       label: Site
-      description: StackExchange site to extract data from
       documentation: https://stackexchange.com/sites
+      description: StackExchange site to extract data from
     - name: tags
       kind: array
       label: Tags
-      description: Tags to extract data from
       documentation: https://stackoverflow.com/tags
+      description: Tags to extract data from
     - name: start_date
       kind: integer
       label: Start Date
-      description: Start date to extract data from
       documentation: https://api.stackexchange.com/docs/dates
+      description: Start date to extract data from
     - name: metrics_log_level
       value: debug
     config:
@@ -44,8 +45,14 @@ plugins:
       - singer-io
       site: stackoverflow.com
       start_date: 1651381200
+    select_filter:
+    - questions
   loaders:
   - name: target-sqlite
+    variant: meltanolabs
+    pip_url: git+https://github.com/MeltanoLabs/target-sqlite.git
     config:
       database: ${MELTANO_PROJECT_ROOT}/output/${MELTANO_EXTRACT__LOAD_SCHEMA}
   - name: target-jsonl
+    variant: andyh1203
+    pip_url: target-jsonl
