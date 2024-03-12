@@ -887,13 +887,13 @@ tests = ["coverage[toml] (==5.0.4)", "pytest (>=6.0.0,<7.0.0)"]
 
 [[package]]
 name = "pyrate-limiter"
-version = "3.4.0"
+version = "3.4.1"
 description = "Python Rate-Limiter using Leaky-Bucket Algorithm"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "pyrate_limiter-3.4.0-py3-none-any.whl", hash = "sha256:c6c0d7d27d7355ecedd46ef8c6cd42f1ce57d7a4b3e3a6be84ffe6d252799d83"},
-    {file = "pyrate_limiter-3.4.0.tar.gz", hash = "sha256:d6b8e607c96f402ff035732ad9f4b541ffa1868b39e76c069d1152342d169970"},
+    {file = "pyrate_limiter-3.4.1-py3-none-any.whl", hash = "sha256:3495812e83ffe04c08b0e6fe8ff4ce5eede031db484449333151ad6c7ac2946d"},
+    {file = "pyrate_limiter-3.4.1.tar.gz", hash = "sha256:e3cda847d0a792a5ed5d5b2d0a91d3e670ed8fcf1d960fb0727df91e770fe60b"},
 ]
 
 [package.extras]
