@@ -887,17 +887,17 @@ tests = ["coverage[toml] (==5.0.4)", "pytest (>=6.0.0,<7.0.0)"]
 
 [[package]]
 name = "pyrate-limiter"
-version = "3.4.1"
+version = "3.6.0"
 description = "Python Rate-Limiter using Leaky-Bucket Algorithm"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "pyrate_limiter-3.4.1-py3-none-any.whl", hash = "sha256:3495812e83ffe04c08b0e6fe8ff4ce5eede031db484449333151ad6c7ac2946d"},
-    {file = "pyrate_limiter-3.4.1.tar.gz", hash = "sha256:e3cda847d0a792a5ed5d5b2d0a91d3e670ed8fcf1d960fb0727df91e770fe60b"},
+    {file = "pyrate_limiter-3.6.0-py3-none-any.whl", hash = "sha256:715e9f08c6fe2a00d0cae5b1a6647d68ffeb2a54dc0cc2cff4e046b067ce6da4"},
+    {file = "pyrate_limiter-3.6.0.tar.gz", hash = "sha256:390f97066b322732e498c9e921fbdfd31d9ec0070a14e06da9af0efc62e091e4"},
 ]
 
 [package.extras]
-all = ["filelock (>=3.0)", "redis (>=5.0.0,<6.0.0)"]
+all = ["filelock (>=3.0)", "psycopg[pool] (>=3.1.18,<4.0.0)", "redis (>=5.0.0,<6.0.0)"]
 docs = ["furo (>=2022.3.4,<2023.0.0)", "myst-parser (>=0.17)", "sphinx (>=4.3.0,<5.0.0)", "sphinx-autodoc-typehints (>=1.17,<2.0)", "sphinx-copybutton (>=0.5)", "sphinxcontrib-apidoc (>=0.3,<0.4)"]
 
 [[package]]
