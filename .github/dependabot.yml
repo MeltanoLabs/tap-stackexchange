@@ -13,6 +13,7 @@ updates:
       timezone: "America/Mexico_City"
     reviewers:
       - "edgarrmondragon"
+    versioning-strategy: increase-if-necessary
   - package-ecosystem: pip
     directory: "/.github/workflows"
     schedule:
