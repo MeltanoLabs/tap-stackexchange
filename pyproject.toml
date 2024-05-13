@@ -1,37 +1,24 @@
-[build-system]
-build-backend = "poetry_dynamic_versioning.backend"
-requires = [
-  "poetry-core==1.8.1",
-  "poetry-dynamic-versioning==1.2",
-]
-
 [tool.poetry]
 name = "tap-stackexchange"
 version = "0.0.0"
 description = "`tap-stackexchange` is a Singer tap for StackExchange, built with the Meltano SDK for Singer Taps."
-authors = [
-  "Edgar Ramírez-Mondragón <edgarrm358@gmail.com>",
-]
+authors = ["Edgar Ramírez-Mondragón <edgarrm358@gmail.com>"]
 classifiers = [
-  "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.8",
-  "Programming Language :: Python :: 3.9",
-  "Programming Language :: Python :: 3.10",
-  "Programming Language :: Python :: 3.11",
-  "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
 ]
 keywords = [
-  "ELT",
-  "meltano",
-  "singer-io",
-  "StackExchange",
+    "ELT",
+    "meltano",
+    "singer-io",
+    "StackExchange",
 ]
 license = "Apache-2.0"
 readme = "README.md"
-
-[tool.poetry.scripts]
-# CLI declaration
-tap-stackexchange = 'tap_stackexchange.tap:TapStackExchange.cli'
 
 [tool.poetry.dependencies]
 python = ">=3.8"
@@ -41,9 +28,24 @@ singer-sdk = "==0.37.*"
 
 [tool.poetry.group.dev.dependencies]
 pytest-httpserver = { version = "^1.0.8", python = "<4" }
-singer-sdk = { extras = [
-  "testing",
-], version = ">=0.23.0" }
+singer-sdk = {extras = ["testing"], version = ">=0.23.0"}
+
+[[tool.mypy.overrides]]
+module = [
+    "ratelimit",
+]
+ignore_missing_imports = true
+
+[build-system]
+build-backend = "poetry_dynamic_versioning.backend"
+requires = [
+  "poetry-core==1.8.1",
+  "poetry-dynamic-versioning==1.2",
+]
+
+[tool.poetry.scripts]
+# CLI declaration
+tap-stackexchange = 'tap_stackexchange.tap:TapStackExchange.cli'
 
 [tool.poetry-dynamic-versioning]
 enable = true
@@ -53,29 +55,18 @@ style = "pep440"
 line-length = 88
 target-version = "py38"
 
+[tool.ruff.lint]
+ignore = [
+    "ANN101",  # missing-type-self
+]
+select = ["ALL"]
+
 [tool.ruff.lint.flake8-annotations]
 allow-star-arg-any = true
 
+[tool.ruff.lint.isort]
+known-first-party = ["tap_stackexchange"]
+required-imports = ["from __future__ import annotations"]
+
 [tool.ruff.lint.pydocstyle]
 convention = "google"
-[tool.ruff.lint]
-ignore = [
-  "ANN101", # missing-type-self
-]
-select = [
-  "ALL",
-]
-
-[tool.ruff.lint.isort]
-known-first-party = [
-  "tap_stackexchange",
-]
-required-imports = [
-  "from __future__ import annotations",
-]
-
-[[tool.mypy.overrides]]
-module = [
-  "ratelimit",
-]
-ignore_missing_imports = true
