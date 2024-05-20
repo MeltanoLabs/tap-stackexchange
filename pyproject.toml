@@ -50,30 +50,23 @@ enable = true
 style = "pep440"
 
 [tool.ruff]
-line-length = 88
 target-version = "py38"
 
-[tool.ruff.lint]
-ignore = [
-  "ANN101", # missing-type-self
-]
-select = [
+line-length = 88
+lint.select = [
   "ALL",
 ]
-
-[tool.ruff.lint.flake8-annotations]
-allow-star-arg-any = true
-
-[tool.ruff.lint.isort]
-known-first-party = [
+lint.flake8-annotations.allow-star-arg-any = true
+lint.isort.known-first-party = [
   "tap_stackexchange",
 ]
-required-imports = [
+lint.isort.required-imports = [
   "from __future__ import annotations",
 ]
-
-[tool.ruff.lint.pydocstyle]
-convention = "google"
+lint.pydocstyle.convention = "google"
+lint.ignore = [
+  "ANN101", # missing-type-self
+]
 
 [[tool.mypy.overrides]]
 module = [
