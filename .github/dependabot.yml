@@ -8,23 +8,38 @@ updates:
   - package-ecosystem: pip
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: weekly
       time: "10:23"
       timezone: "America/Mexico_City"
     reviewers:
       - "edgarrmondragon"
     versioning-strategy: increase-if-necessary
+    groups:
+      development-dependencies:
+        dependency-type: development
+      runtime-dependencies:
+        dependency-type: production
+        update-types:
+          - "patch"
   - package-ecosystem: pip
     directory: "/.github/workflows"
     schedule:
       time: "10:23"
-      interval: "daily"
+      interval: weekly
     reviewers:
       - "edgarrmondragon"
+    groups:
+      ci:
+        patterns:
+          - "*"
   - package-ecosystem: github-actions
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: weekly
       time: "10:23"
     reviewers:
       - "edgarrmondragon"
+    groups:
+      actions:
+        patterns:
+          - "*"
