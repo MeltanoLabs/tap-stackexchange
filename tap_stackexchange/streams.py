@@ -10,6 +10,7 @@ from tap_stackexchange.client import StackExchangeStream, TagPartitionedStream
 
 if t.TYPE_CHECKING:
     import requests
+    from singer_sdk.helpers.types import Context
 
 SHALLOW_USER = th.ObjectType(
     th.Property("accept_rate", th.IntegerType),
@@ -109,7 +110,7 @@ class Questions(TagPartitionedStream):
 
     def get_url_params(
         self,
-        context: dict | None,
+        context: Context | None,
         next_page_token: int | None,
     ) -> dict[str, t.Any]:
         """Get URL query parameters.
@@ -128,7 +129,7 @@ class Questions(TagPartitionedStream):
     def get_child_context(
         self,
         record: dict,
-        context: dict | None,  # noqa: ARG002
+        context: Context | None,  # noqa: ARG002
     ) -> dict:
         """Get context dictionary for child streams.
 
@@ -218,7 +219,7 @@ class QuestionComments(TagPartitionedStream):
 
     def get_url_params(
         self,
-        context: dict | None,
+        context: Context | None,
         next_page_token: int | None,
     ) -> dict[str, t.Any]:
         """Get URL query parameters.
@@ -260,7 +261,7 @@ class Tags(StackExchangeStream):
     def post_process(
         self,
         row: dict,
-        context: dict | None = None,  # noqa: ARG002
+        context: Context | None = None,  # noqa: ARG002
     ) -> dict | None:
         """Post process row.
 
@@ -309,7 +310,7 @@ class TopAskers(TagPartitionedStream):
             record["idx"] = idx
             yield record
 
-    def post_process(self, row: dict, context: dict | None = None) -> dict | None:
+    def post_process(self, row: dict, context: Context | None = None) -> dict | None:
         """Process record before writing it to stdout.
 
         Args:
