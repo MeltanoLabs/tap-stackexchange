@@ -21,6 +21,7 @@ from singer_sdk.streams import RESTStream
 
 if t.TYPE_CHECKING:
     import requests
+    from singer_sdk.helpers.types import Context
 
 logger = logging.getLogger(__name__)
 
@@ -150,7 +151,7 @@ class StackExchangeStream(RESTStream):
 
     def get_url_params(
         self,
-        context: dict | None,
+        context: Context | None,
         next_page_token: int | None,
     ) -> dict[str, t.Any]:
         """Return a dictionary of values to be used in URL parameterization.
@@ -194,7 +195,7 @@ class TagPartitionedStream(StackExchangeStream):
     """Tag-partitioned stream class."""
 
     @property
-    def partitions(self) -> list[dict] | None:
+    def partitions(self) -> list[Context] | None:
         """Partition stream by the configured tags.
 
         Returns:

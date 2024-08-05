@@ -36,10 +36,12 @@ requests-cache = { version = "==1.*", python = "<4" }
 singer-sdk = "==0.39.*"
 
 [tool.poetry.group.dev.dependencies]
+mypy = ">=1.11.1"
 pytest-httpserver = { version = "^1.0.8", python = "<4" }
 singer-sdk = { extras = [
   "testing",
 ], version = ">=0.23.0" }
+types-requests = "*"
 
 [tool.poetry.scripts]
 # CLI declaration
@@ -68,6 +70,10 @@ lint.isort.required-imports = [
   "from __future__ import annotations",
 ]
 lint.pydocstyle.convention = "google"
+
+[tool.mypy]
+warn_unused_configs = true
+warn_unused_ignores = true
 
 [[tool.mypy.overrides]]
 module = [

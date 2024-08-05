@@ -44,3 +44,33 @@ jobs:
         TAP_STACKEXCHANGE_KEY: ${{ secrets.TAP_STACKEXCHANGE_KEY }}
       run: |
         tox -e py$(echo ${{ matrix.python-version }} | tr -d .)
+
+  typing:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.12"
+
+    - name: Upgrade pip
+      run: |
+        pip install pip
+        pip --version
+
+    - name: Install Poetry
+      run: |
+        pipx install poetry
+        poetry --version
+        poetry self show plugins
+
+    - name: Install dependencies
+      run: |
+        poetry install
+
+    - name: Run typing checks
+      run: |
+        poetry run mypy tap_stackexchange
