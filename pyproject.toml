@@ -29,6 +29,9 @@ keywords = [
 ]
 license = "Apache-2.0"
 readme = "README.md"
+homepage = "https://github.com/MeltanoLabs/tap-stackexchange"
+repository = "https://github.com/MeltanoLabs/tap-stackexchange"
+documentation = "https://github.com/MeltanoLabs/tap-stackexchange/blob/main/README.md"
 
 [tool.poetry.dependencies]
 python = ">=3.8"
