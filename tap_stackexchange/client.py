@@ -195,7 +195,7 @@ class TagPartitionedStream(StackExchangeStream):
     """Tag-partitioned stream class."""
 
     @property
-    def partitions(self) -> list[Context] | None:
+    def partitions(self) -> list[dict[str, t.Any]] | None:
         """Partition stream by the configured tags.
 
         Returns:
