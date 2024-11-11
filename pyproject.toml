@@ -36,7 +36,7 @@ documentation = "https://github.com/MeltanoLabs/tap-stackexchange/blob/main/READ
 python = ">=3.9"
 pyrate-limiter = { version = "==3.*", python = "<4" }
 requests-cache = { version = "==1.*", python = "<4" }
-singer-sdk = "==0.41.*"
+singer-sdk = "==0.42.*"
 
 [tool.poetry.group.dev.dependencies]
 mypy = ">=1.11.1"
