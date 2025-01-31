@@ -1,25 +1,14 @@
 [build-system]
-build-backend = "poetry_dynamic_versioning.backend"
+build-backend = "hatchling.build"
 requires = [
-  "poetry-core==1.9",
-  "poetry-dynamic-versioning==1.4",
+  "hatch-vcs==0.4",
+  "hatchling==1.27",
 ]
 
-[tool.poetry]
+[project]
 name = "tap-stackexchange"
-version = "0.0.0"
 description = "Singer tap for StackExchange, built with the Meltano SDK for Singer Taps."
-authors = [
-  "Edgar Ramírez-Mondragón <edgarrm358@gmail.com>",
-]
-classifiers = [
-  "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.9",
-  "Programming Language :: Python :: 3.10",
-  "Programming Language :: Python :: 3.11",
-  "Programming Language :: Python :: 3.12",
-  "Programming Language :: Python :: 3.13",
-]
+readme = "README.md"
 keywords = [
   "ELT",
   "meltano",
@@ -27,42 +16,49 @@ keywords = [
   "StackExchange",
 ]
 license = "Apache-2.0"
-readme = "README.md"
-homepage = "https://github.com/MeltanoLabs/tap-stackexchange"
-repository = "https://github.com/MeltanoLabs/tap-stackexchange"
-documentation = "https://github.com/MeltanoLabs/tap-stackexchange/blob/main/README.md"
+authors = [ { name = "Edgar Ramírez-Mondragón", email = "edgarrm358@gmail.com" } ]
+requires-python = ">=3.9"
+classifiers = [
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+]
+dynamic = [ "version" ]
+dependencies = [
+  "pyrate-limiter==3.*; python_version<'4'",
+  "requests-cache==1.*; python_version<'4'",
+  "singer-sdk==0.44.*",
+]
 
-[tool.poetry.dependencies]
-python = ">=3.9"
-pyrate-limiter = { version = "==3.*", python = "<4" }
-requests-cache = { version = "==1.*", python = "<4" }
-singer-sdk = "==0.44.*"
+urls.Documentation = "https://github.com/MeltanoLabs/tap-stackexchange/blob/main/README.md"
+urls.Homepage = "https://github.com/MeltanoLabs/tap-stackexchange"
+urls.Repository = "https://github.com/MeltanoLabs/tap-stackexchange"
+scripts.tap-stackexchange = "tap_stackexchange.tap:TapStackExchange.cli"
 
-[tool.poetry.group.dev.dependencies]
-mypy = ">=1.11.1"
-pytest-httpserver = { version = "^1.0.8", python = "<4" }
-singer-sdk = { extras = [
-  "testing",
-], version = ">=0.23.0" }
-types-requests = "*"
+[dependency-groups]
+dev = [
+  { include-group = "test" },
+  { include-group = "typing" },
+]
+test = [
+  "pytest-httpserver>=1.0.8,<2; python_version<'4'",
+  "singer-sdk[testing]>=0.23",
+]
+typing = [
+  "mypy>=1.11.1",
+  "types-requests",
+]
 
-[tool.poetry.scripts]
-# CLI declaration
-tap-stackexchange = 'tap_stackexchange.tap:TapStackExchange.cli'
-
-[tool.poetry-dynamic-versioning]
-enable = true
-style = "pep440"
+[tool.hatch.version]
+source = "vcs"
 
 [tool.ruff]
-target-version = "py39"
-
 line-length = 88
 lint.select = [
   "ALL",
-]
-lint.ignore = [
-  "ANN101", # missing-type-self
 ]
 
 lint.flake8-annotations.allow-star-arg-any = true

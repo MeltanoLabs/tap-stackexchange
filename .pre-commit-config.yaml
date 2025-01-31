@@ -35,13 +35,6 @@ repos:
     additional_dependencies:
     - types-requests
 
-- repo: https://github.com/pycqa/flake8
-  rev: 7.1.1
-  hooks:
-  - id: flake8
-    additional_dependencies:
-    - darglint
-
 - repo: https://github.com/pre-commit/pre-commit
   rev: v4.0.1
   hooks:

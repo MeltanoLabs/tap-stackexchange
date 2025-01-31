@@ -36,7 +36,7 @@ jobs:
   tests:
     runs-on: ubuntu-latest
     env:
-      PIP_CONSTRAINT: ${{ github.workspace }}/.github/workflows/constraints.txt
+      UV_CONSTRAINT: ${{ github.workspace }}/.github/workflows/constraints.txt
     strategy:
       matrix:
         python-version:
@@ -56,19 +56,13 @@ jobs:
         python-version: ${{ matrix.python-version }}
         allow-prereleases: true
 
-    - name: Upgrade pip
-      run: |
-        pip install pip
-        pip --version
-
-    - name: Install Poetry
-      run: |
-        pipx install poetry
-        poetry --version
+    - uses: astral-sh/setup-uv@v5
+      with:
+        version: ">=0.5.19"
 
     - name: Install tox
       run: |
-        pipx install tox
+        uv tool install tox
         tox --version
 
     - name: Run tests
@@ -88,21 +82,10 @@ jobs:
       with:
         python-version: "3.x"
 
-    - name: Upgrade pip
-      run: |
-        pip install pip
-        pip --version
-
-    - name: Install Poetry
-      run: |
-        pipx install poetry
-        poetry --version
-        poetry self show plugins
-
-    - name: Install dependencies
-      run: |
-        poetry install
+    - uses: astral-sh/setup-uv@v5
+      with:
+        version: ">=0.5.19"
 
     - name: Run typing checks
       run: |
-        poetry run mypy tap_stackexchange
+        uv run mypy tap_stackexchange
