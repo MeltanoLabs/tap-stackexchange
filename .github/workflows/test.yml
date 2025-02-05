@@ -52,6 +52,7 @@ jobs:
 
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v5.1.1
+      id: setup-python
       with:
         python-version: ${{ matrix.python-version }}
         allow-prereleases: true
@@ -67,9 +68,12 @@ jobs:
 
     - name: Run tests
       env:
+        UV_PYTHON: ${{ steps.setup-python.outputs.python-path }}
         TAP_STACKEXCHANGE_KEY: ${{ secrets.TAP_STACKEXCHANGE_KEY }}
+      # run: |
+      #   tox -e py$(echo ${{ matrix.python-version }} | tr -d .)
       run: |
-        tox -e py$(echo ${{ matrix.python-version }} | tr -d .)
+        uv run pytest
 
   typing:
     runs-on: ubuntu-latest
