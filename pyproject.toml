@@ -44,6 +44,7 @@ dev = [
   { include-group = "typing" },
 ]
 test = [
+  "pytest-github-actions-annotate-failures>=0.3",
   "pytest-httpserver>=1.0.8,<2; python_version<'4'",
   "singer-sdk[testing]>=0.23",
 ]
