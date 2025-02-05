@@ -61,6 +61,8 @@ class StackExchangeStream(RESTStream):
     records_jsonpath = "$.items[*]"
     is_sorted = True
 
+    rest_method = "GET"
+
     rate_limit_response_codes: t.ClassVar[list[int]] = []
 
     def __init__(self, *args: t.Any, base_url: str = BASE_URL, **kwargs: t.Any) -> None:
