@@ -30,7 +30,7 @@ dynamic = [ "version" ]
 dependencies = [
   "pyrate-limiter==3.*; python_version<'4'",
   "requests-cache==1.*; python_version<'4'",
-  "singer-sdk==0.44.*",
+  "singer-sdk==0.45.*",
 ]
 
 urls.Documentation = "https://github.com/MeltanoLabs/tap-stackexchange/blob/main/README.md"
