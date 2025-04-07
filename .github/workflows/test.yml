@@ -8,9 +8,9 @@ on:
     - .github/workflows/test.yml
     - tap_stackexchange/**
     - tests/**
-    - poetry.lock
     - pyproject.toml
     - tox.ini
+    - uv.lock
   pull_request:
     branches: [main]
     paths:
@@ -18,9 +18,9 @@ on:
     - .github/workflows/test.yml
     - tap_stackexchange/**
     - tests/**
-    - poetry.lock
     - pyproject.toml
     - tox.ini
+    - uv.lock
   schedule:
   - cron: "0 10 * * *"
   workflow_dispatch:
