@@ -5,14 +5,12 @@
 
 version: 2
 updates:
-  - package-ecosystem: pip
+  - package-ecosystem: uv
     directory: "/"
     schedule:
       interval: weekly
       time: "10:23"
       timezone: "America/Mexico_City"
-    reviewers:
-      - "edgarrmondragon"
     versioning-strategy: increase-if-necessary
     commit-message:
       prefix: "feat(deps): "
@@ -29,8 +27,6 @@ updates:
     schedule:
       time: "10:23"
       interval: weekly
-    reviewers:
-      - "edgarrmondragon"
     commit-message:
       prefix: "ci: "
     groups:
@@ -42,8 +38,6 @@ updates:
     schedule:
       interval: weekly
       time: "10:23"
-    reviewers:
-      - "edgarrmondragon"
     commit-message:
       prefix: "ci: "
     groups:
