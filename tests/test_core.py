@@ -12,7 +12,6 @@ SAMPLE_CONFIG = {
         "meltano",
         "singer-io",
     ],
-    "metrics_log_level": "debug",
 }
 
 TEST_SUITE_CONFIG = SuiteConfig(
