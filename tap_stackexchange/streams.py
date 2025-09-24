@@ -2,13 +2,21 @@
 
 from __future__ import annotations
 
-import typing as t
+import sys
+from typing import TYPE_CHECKING, Any
 
 from singer_sdk import typing as th
 
 from tap_stackexchange.client import StackExchangeStream, TagPartitionedStream
 
-if t.TYPE_CHECKING:
+if sys.version_info >= (3, 12):
+    from typing import override
+else:
+    from typing_extensions import override
+
+if TYPE_CHECKING:
+    from collections.abc import Generator
+
     import requests
     from singer_sdk.helpers.types import Context
 
@@ -67,7 +75,7 @@ class Questions(TagPartitionedStream):
 
     name = "questions"
     path = "/questions"
-    primary_keys: t.ClassVar[list[str]] = ["question_id"]
+    primary_keys = ("question_id",)
     replication_key = "last_activity_date"
 
     schema = th.PropertiesList(
@@ -106,40 +114,28 @@ class Questions(TagPartitionedStream):
         ),
         th.Property("protected_date", th.IntegerType),
         th.Property("owner", SHALLOW_USER),
+        # Context fields
+        th.Property("tag", th.StringType),
     ).to_dict()
 
+    @override
     def get_url_params(
         self,
         context: Context | None,
         next_page_token: int | None,
-    ) -> dict[str, t.Any]:
-        """Get URL query parameters.
-
-        Args:
-            context: Stream sync context.
-            next_page_token: Value used to retrieve next page.
-
-        Returns:
-            Dictionary of URL query parameters.
-        """
+    ) -> dict[str, Any]:
+        """Get URL query parameters."""
         params = super().get_url_params(context, next_page_token)
         params["tagged"] = context["tag"] if context else None
         return params
 
+    @override
     def get_child_context(
         self,
         record: dict,
-        context: Context | None,  # noqa: ARG002
+        context: Context | None,
     ) -> dict:
-        """Get context dictionary for child streams.
-
-        Args:
-            record: Single question record.
-            context: Stream sync context.
-
-        Returns:
-            Context for child streams.
-        """
+        """Get context dictionary for child streams."""
         return {"question_id": record["question_id"]}
 
 
@@ -148,7 +144,7 @@ class QuestionAnswers(TagPartitionedStream):
 
     name = "answers"
     path = "/questions/{question_id}/answers"
-    primary_keys: t.ClassVar[list[str]] = ["answer_id"]
+    primary_keys = ("answer_id",)
     replication_key = "last_activity_date"
     parent_stream_type = Questions
 
@@ -202,7 +198,7 @@ class QuestionComments(TagPartitionedStream):
 
     name = "question_comments"
     path = "/questions/{question_id}/comments"
-    primary_keys: t.ClassVar[list[str]] = ["comment_id"]
+    primary_keys = ("comment_id",)
     replication_key = "creation_date"
     parent_stream_type = Questions
 
@@ -217,20 +213,13 @@ class QuestionComments(TagPartitionedStream):
         th.Property("reply_to_user", SHALLOW_USER),
     ).to_dict()
 
+    @override
     def get_url_params(
         self,
         context: Context | None,
         next_page_token: int | None,
-    ) -> dict[str, t.Any]:
-        """Get URL query parameters.
-
-        Args:
-            context: Stream sync context.
-            next_page_token: Value used to retrieve next page.
-
-        Returns:
-            Dictionary of URL query parameters.
-        """
+    ) -> dict[str, Any]:
+        """Get URL query parameters."""
         params = super().get_url_params(context, next_page_token)
         params["sort"] = "creation"
         return params
@@ -241,7 +230,7 @@ class Tags(StackExchangeStream):
 
     name = "tags"
     path = "/tags"
-    primary_keys: t.ClassVar[list[str]] = ["name"]
+    primary_keys = ("name",)
     replication_key = "last_activity_date"
 
     schema = th.PropertiesList(
@@ -258,20 +247,13 @@ class Tags(StackExchangeStream):
         th.Property("last_activity_date", th.IntegerType),
     ).to_dict()
 
+    @override
     def post_process(
         self,
         row: dict,
-        context: Context | None = None,  # noqa: ARG002
+        context: Context | None = None,
     ) -> dict | None:
-        """Post process row.
-
-        Args:
-            row: Row from response.
-            context: Stream sync context.
-
-        Returns:
-            Transformed row.
-        """
+        """Post process row."""
         if "last_activity_date" not in row:
             row["last_activity_date"] = 0
         return row
@@ -282,7 +264,7 @@ class TopAskers(TagPartitionedStream):
 
     name = "top_askers"
     path = "/tags/{tag}/top-askers/all_time"
-    primary_keys: t.ClassVar[list[str]] = ["idx", "tag"]
+    primary_keys = ("idx", "tag")
     replication_key = None
 
     schema = th.PropertiesList(
@@ -293,33 +275,20 @@ class TopAskers(TagPartitionedStream):
         th.Property("score", th.IntegerType),
     ).to_dict()
 
+    @override
     def parse_response(
         self,
         response: requests.Response,
-    ) -> t.Generator[dict, None, None]:
-        """Process records in response.
-
-        Args:
-            response: HTTP response object.
-
-        Yields:
-            Records.
-        """
+    ) -> Generator[dict, None, None]:
+        """Process records in response."""
         records = super().parse_response(response)
         for idx, record in enumerate(records):
             record["idx"] = idx
             yield record
 
+    @override
     def post_process(self, row: dict, context: Context | None = None) -> dict | None:
-        """Process record before writing it to stdout.
-
-        Args:
-            row: Single record.
-            context: Stream sync context.
-
-        Returns:
-            A dictionary with the new record.
-        """
+        """Process record before writing it to stdout."""
         updated_row = super().post_process(row, context)
         if updated_row is not None and context:
             updated_row["tag"] = context["tag"]
@@ -338,7 +307,7 @@ class TagSynonyms(TagPartitionedStream):
 
     name = "tag_synonyms"
     path = "/tags/{tag}/synonyms"
-    primary_keys: t.ClassVar[list[str]] = ["from_tag", "to_tag"]
+    primary_keys = ("from_tag", "to_tag")
     replication_key = "creation_date"
 
     schema = th.PropertiesList(
@@ -347,4 +316,6 @@ class TagSynonyms(TagPartitionedStream):
         th.Property("creation_date", th.IntegerType),
         th.Property("last_applied_date", th.IntegerType),
         th.Property("applied_count", th.IntegerType),
+        # Context fields
+        th.Property("tag", th.StringType),
     ).to_dict()

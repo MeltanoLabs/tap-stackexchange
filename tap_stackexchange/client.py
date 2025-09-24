@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import logging
+import sys
 import typing as t
 
 from pyrate_limiter import (
@@ -18,6 +19,11 @@ from requests_cache import install_cache
 from singer_sdk.exceptions import RetriableAPIError
 from singer_sdk.pagination import BasePageNumberPaginator
 from singer_sdk.streams import RESTStream
+
+if sys.version_info >= (3, 12):
+    from typing import override
+else:
+    from typing_extensions import override
 
 if t.TYPE_CHECKING:
     import requests
@@ -63,62 +69,29 @@ class StackExchangeStream(RESTStream):
 
     rate_limit_response_codes: t.ClassVar[list[int]] = []
 
+    @override
     def __init__(self, *args: t.Any, base_url: str = BASE_URL, **kwargs: t.Any) -> None:
-        """Initialize the stream.
-
-        Args:
-            *args: Positional arguments for RESTStream.
-            base_url: Base URL for the API.
-            **kwargs: Keyword arguments for RESTStream.
-        """
+        """Initialize the stream."""
         self.base_url = base_url
         super().__init__(*args, **kwargs)
 
+    @override
     @property
     def url_base(self) -> str:
-        """API base URL.
-
-        Returns:
-            Base URL.
-        """
+        """API base URL."""
         return self.base_url
 
-    @property
-    def http_headers(self) -> dict:
-        """Return the http headers needed.
-
-        Returns:
-            Mapping of HTTP headers.
-        """
-        headers = {}
-        if "user_agent" in self.config:
-            headers["User-Agent"] = self.config.get("user_agent")
-        return headers
-
+    @override
     def request_decorator(self, func: t.Callable) -> t.Callable:
-        """Decorate the request method of the stream.
-
-        Args:
-            func: The RESTStream._request method.
-
-        Returns:
-            Decorated method.
-        """
+        """Decorate the request method of the stream."""
         return limiter.as_decorator()(self._limiter_mapping)(func)
 
     def _limiter_mapping(self, *_args: t.Any, **_kwargs: t.Any) -> tuple[str, int]:
         return self.tap_name, 1
 
+    @override
     def validate_response(self, response: requests.Response) -> None:
-        """Validate the HTTP response.
-
-        Args:
-            response: HTTP response.
-
-        Raises:
-            LimiterDelayException: if a backoff amount is returned with the response
-                or any other recoverable error occurs.
-        """
+        """Validate the HTTP response."""
         if has_backoff(response):
             self.logger.info(response.text)
             backoff = response.json()["backoff"]
@@ -149,20 +122,13 @@ class StackExchangeStream(RESTStream):
                 max_delay=100_000,
             ) from exc
 
+    @override
     def get_url_params(
         self,
         context: Context | None,
         next_page_token: int | None,
     ) -> dict[str, t.Any]:
-        """Return a dictionary of values to be used in URL parameterization.
-
-        Args:
-            context: Stream context dictionary.
-            next_page_token: Value used to retrieve next page of data.
-
-        Returns:
-            Mapping of URL query parameters.
-        """
+        """Return a dictionary of values to be used in URL parameterization."""
         params = {
             "site": self.config["site"],
             "pagesize": self.PAGE_SIZE,
@@ -182,23 +148,17 @@ class StackExchangeStream(RESTStream):
 
         return params
 
+    @override
     def get_new_paginator(self) -> BasePageNumberPaginator:
-        """Return a new paginator instance.
-
-        Returns:
-            Paginator instance.
-        """
+        """Return a new paginator instance."""
         return BasePageNumberPaginator(start_value=1)
 
 
 class TagPartitionedStream(StackExchangeStream):
     """Tag-partitioned stream class."""
 
+    @override
     @property
     def partitions(self) -> list[dict[str, t.Any]] | None:
-        """Partition stream by the configured tags.
-
-        Returns:
-            List of dictionary representing different partitions in the stream.
-        """
+        """Partition stream by the configured tags."""
         return [{"tag": tag} for tag in self.config.get("tags", [])]
