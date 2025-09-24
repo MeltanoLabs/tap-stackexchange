@@ -2,22 +2,19 @@
 
 from __future__ import annotations
 
+import sys
+
 from singer_sdk import Stream, Tap
 from singer_sdk import typing as th
 
 from tap_stackexchange import streams
 
-FILTER_ID = "!6VvPDzOeLJfUL"
+if sys.version_info >= (3, 12):
+    from typing import override
+else:
+    from typing_extensions import override
 
-STREAM_TYPES = [
-    streams.Questions,
-    streams.QuestionAnswers,
-    streams.QuestionComments,
-    streams.Tags,
-    streams.TagSynonyms,
-    streams.TopAnswerers,
-    streams.TopAskers,
-]
+FILTER_ID = "!6VvPDzOeLJfUL"
 
 
 class TapStackExchange(Tap):
@@ -58,10 +55,14 @@ class TapStackExchange(Tap):
         ),
     ).to_dict()
 
+    @override
     def discover_streams(self) -> list[Stream]:
-        """Return a list of discovered streams.
-
-        Returns:
-            List of stream instances.
-        """
-        return [stream_class(tap=self) for stream_class in STREAM_TYPES]
+        return [
+            streams.Questions(tap=self),
+            streams.QuestionAnswers(tap=self),
+            streams.QuestionComments(tap=self),
+            streams.Tags(tap=self),
+            streams.TagSynonyms(tap=self),
+            streams.TopAnswerers(tap=self),
+            streams.TopAskers(tap=self),
+        ]
