@@ -30,7 +30,7 @@ dynamic = [ "version" ]
 dependencies = [
   "pyrate-limiter==3.*; python_version<'4'",
   "requests-cache==1.*; python_version<'4'",
-  "singer-sdk==0.50.*",
+  "singer-sdk==0.52.*",
   "typing-extensions>=4.15; python_full_version<'3.12'",
 ]
 
