@@ -59,7 +59,7 @@ jobs:
 
     - uses: astral-sh/setup-uv@1e862dfacbd1d6d858c55d9b792c756523627244 # v7.1.4
       with:
-        version: ">=0.5.19"
+        version: ">=0.9"
 
     - name: Install tox
       run: |
@@ -85,8 +85,8 @@ jobs:
 
     - uses: astral-sh/setup-uv@1e862dfacbd1d6d858c55d9b792c756523627244 # v7.1.4
       with:
-        version: ">=0.5.19"
+        version: ">=0.9"
 
     - name: Run typing checks
       run: |
-        uv run mypy tap_stackexchange
+        uvx --with tox-uv tox -e typing

@@ -54,7 +54,7 @@ rate = Rate(100, Duration.MINUTE)
 limiter = Limiter(rate, max_delay=100_000)
 
 
-class StackExchangeStream(RESTStream):
+class StackExchangeStream(RESTStream[int]):
     """StackExchange stream class."""
 
     PAGE_SIZE = 100
@@ -82,7 +82,7 @@ class StackExchangeStream(RESTStream):
         return self.base_url
 
     @override
-    def request_decorator(self, func: t.Callable) -> t.Callable:
+    def request_decorator(self, func: t.Callable) -> t.Callable:  # type: ignore[type-arg]
         """Decorate the request method of the stream."""
         return limiter.as_decorator()(self._limiter_mapping)(func)
 
@@ -100,7 +100,7 @@ class StackExchangeStream(RESTStream):
             raise LimiterDelayException(
                 item=RateItem(
                     self.tap_name,
-                    clock.now(),
+                    clock.now(),  # type: ignore[no-untyped-call]
                 ),
                 rate=rate,
                 actual_delay=backoff,
@@ -115,7 +115,7 @@ class StackExchangeStream(RESTStream):
             raise LimiterDelayException(
                 item=RateItem(
                     self.tap_name,
-                    clock.now(),
+                    clock.now(),  # type: ignore[no-untyped-call]
                 ),
                 rate=rate,
                 actual_delay=5_000,
