@@ -2,7 +2,7 @@
 build-backend = "hatchling.build"
 requires = [
   "hatch-vcs==0.5",
-  "hatchling==1.27",
+  "hatchling==1.28",
 ]
 
 [project]
@@ -41,23 +41,27 @@ scripts.tap-stackexchange = "tap_stackexchange.tap:TapStackExchange.cli"
 
 [dependency-groups]
 dev = [
-  { include-group = "test" },
+  { include-group = "testing" },
   { include-group = "typing" },
 ]
-test = [
-  "pytest>=8.4.2",
+testing = [
+  "pytest>=9",
   "pytest-github-actions-annotate-failures>=0.3",
   "pytest-httpserver>=1.0.8; python_version<'4'",
   "singer-sdk[testing]",
 ]
 typing = [
   "mypy>=1.18",
+  "ty>=0.0.1a29",
   "types-requests>=2.32.4",
 ]
 
 [tool.hatch.version]
 fallback-version = "0.0.0"
 source = "vcs"
+
+[tool.uv]
+required-version = ">=0.9"
 
 [tool.ruff]
 line-length = 88
@@ -76,6 +80,38 @@ lint.pydocstyle.convention = "google"
 
 [tool.pyproject-fmt]
 max_supported_python = "3.14"
+
+[tool.tox]
+minversion = "4.22"
+requires = [
+  "tox>=4.22",
+  "tox-uv",
+]
+envlist = [
+  "typing",
+  "py310",
+  "py311",
+  "py312",
+  "py313",
+  "py314",
+]
+
+[tool.tox.env_run_base]
+runner = "uv-venv-lock-runner"
+pass_env = [
+  "GITHUB_*",
+  "TAP_STACKEXCHANGE_*",
+]
+set_env = { "PYO3_USE_ABI3_FORWARD_COMPATIBILITY" = "1" }
+dependency_groups = [ "testing" ]
+commands = [ [ "pytest", { replace = "posargs", default = [ "tests" ], extend = true } ] ]
+
+[tool.tox.env.typing]
+dependency_groups = [ "testing", "typing" ]
+commands = [
+  [ "mypy", "--strict", { replace = "posargs", default = [ "tap_stackexchange", "tests" ], extend = true } ],
+  [ "ty", "check", { replace = "posargs", default = [ "tap_stackexchange", "tests" ], extend = true } ],
+]
 
 [tool.mypy]
 warn_redundant_casts = true

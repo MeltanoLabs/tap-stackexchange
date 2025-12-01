@@ -18,7 +18,7 @@ if TYPE_CHECKING:
     from collections.abc import Generator
 
     import requests
-    from singer_sdk.helpers.types import Context
+    from singer_sdk.helpers.types import Context, Record
 
 SHALLOW_USER = th.ObjectType(
     th.Property("accept_rate", th.IntegerType),
@@ -32,7 +32,7 @@ SHALLOW_USER = th.ObjectType(
 )
 
 SITE = th.ObjectType(
-    th.Property("aliases", th.ArrayType(th.StringType)),
+    th.Property("aliases", th.ArrayType(th.StringType)),  # ty: ignore[invalid-argument-type]
     th.Property("api_site_parameter", th.StringType),
     th.Property("audience", th.StringType),
     th.Property("closed_beta_date", th.IntegerType),
@@ -41,7 +41,7 @@ SITE = th.ObjectType(
     th.Property("high_resolution_icon_url", th.StringType),
     th.Property("launch_date", th.IntegerType),
     th.Property("logo_url", th.StringType),
-    th.Property("markdown_extensions", th.ArrayType(th.StringType)),
+    th.Property("markdown_extensions", th.ArrayType(th.StringType)),  # ty: ignore[invalid-argument-type]
     th.Property("name", th.StringType),
     th.Property("open_beta_date", th.IntegerType),
     th.Property(
@@ -95,7 +95,7 @@ class Questions(TagPartitionedStream):
         th.Property("last_activity_date", th.IntegerType),
         th.Property("creation_date", th.IntegerType),
         th.Property("last_edit_date", th.IntegerType),
-        th.Property("tags", th.ArrayType(th.StringType)),
+        th.Property("tags", th.ArrayType(th.StringType)),  # ty: ignore[invalid-argument-type]
         th.Property("view_count", th.IntegerType),
         th.Property("answer_count", th.IntegerType),
         th.Property("comment_count", th.IntegerType),
@@ -132,9 +132,9 @@ class Questions(TagPartitionedStream):
     @override
     def get_child_context(
         self,
-        record: dict,
+        record: Record,
         context: Context | None,
-    ) -> dict:
+    ) -> Context:
         """Get context dictionary for child streams."""
         return {"question_id": record["question_id"]}
 
@@ -184,7 +184,7 @@ class QuestionAnswers(TagPartitionedStream):
                     th.Property("link", th.StringType),
                     th.Property("name", th.StringType),
                     th.Property("slug", th.StringType),
-                    th.Property("tags", th.ArrayType(th.StringType)),
+                    th.Property("tags", th.ArrayType(th.StringType)),  # ty: ignore[invalid-argument-type]
                 ),
             ),
         ),
@@ -250,9 +250,9 @@ class Tags(StackExchangeStream):
     @override
     def post_process(
         self,
-        row: dict,
+        row: Record,
         context: Context | None = None,
-    ) -> dict | None:
+    ) -> Record | None:
         """Post process row."""
         if "last_activity_date" not in row:
             row["last_activity_date"] = 0
@@ -279,7 +279,7 @@ class TopAskers(TagPartitionedStream):
     def parse_response(
         self,
         response: requests.Response,
-    ) -> Generator[dict, None, None]:
+    ) -> Generator[Record, None, None]:
         """Process records in response."""
         records = super().parse_response(response)
         for idx, record in enumerate(records):
@@ -287,7 +287,11 @@ class TopAskers(TagPartitionedStream):
             yield record
 
     @override
-    def post_process(self, row: dict, context: Context | None = None) -> dict | None:
+    def post_process(
+        self,
+        row: Record,
+        context: Context | None = None,
+    ) -> Record | None:
         """Process record before writing it to stdout."""
         updated_row = super().post_process(row, context)
         if updated_row is not None and context:
