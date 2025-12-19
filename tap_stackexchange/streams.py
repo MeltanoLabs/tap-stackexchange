@@ -232,6 +232,7 @@ class Tags(StackExchangeStream):
     path = "/tags"
     primary_keys = ("name",)
     replication_key = "last_activity_date"
+    is_sorted = False
 
     schema = th.PropertiesList(
         th.Property(
