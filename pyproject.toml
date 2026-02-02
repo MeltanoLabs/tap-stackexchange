@@ -96,6 +96,13 @@ envlist = [
   "py314",
 ]
 
+[tool.tox.env.typing]
+dependency_groups = [ "testing", "typing" ]
+commands = [
+  [ "mypy", "--strict", { replace = "posargs", default = [ "tap_stackexchange", "tests" ], extend = true } ],
+  [ "ty", "check", { replace = "posargs", default = [ "tap_stackexchange", "tests" ], extend = true } ],
+]
+
 [tool.tox.env_run_base]
 runner = "uv-venv-lock-runner"
 pass_env = [
@@ -105,13 +112,6 @@ pass_env = [
 set_env = { "PYO3_USE_ABI3_FORWARD_COMPATIBILITY" = "1" }
 dependency_groups = [ "testing" ]
 commands = [ [ "pytest", { replace = "posargs", default = [ "tests" ], extend = true } ] ]
-
-[tool.tox.env.typing]
-dependency_groups = [ "testing", "typing" ]
-commands = [
-  [ "mypy", "--strict", { replace = "posargs", default = [ "tap_stackexchange", "tests" ], extend = true } ],
-  [ "ty", "check", { replace = "posargs", default = [ "tap_stackexchange", "tests" ], extend = true } ],
-]
 
 [tool.mypy]
 warn_redundant_casts = true
