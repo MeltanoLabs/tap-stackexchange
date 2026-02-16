@@ -99,7 +99,7 @@ envlist = [
 [tool.tox.env.typing]
 dependency_groups = [ "testing", "typing" ]
 commands = [
-  [ "mypy", "--strict", { replace = "posargs", default = [ "tap_stackexchange", "tests" ], extend = true } ],
+  [ "mypy", { replace = "posargs", default = [ "tap_stackexchange", "tests" ], extend = true } ],
   [ "ty", "check", { replace = "posargs", default = [ "tap_stackexchange", "tests" ], extend = true } ],
 ]
 
@@ -114,6 +114,7 @@ dependency_groups = [ "testing" ]
 commands = [ [ "pytest", { replace = "posargs", default = [ "tests" ], extend = true } ] ]
 
 [tool.mypy]
+strict = true
 warn_redundant_casts = true
 warn_unreachable = true
 warn_unused_configs = true

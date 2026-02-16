@@ -32,7 +32,7 @@ SHALLOW_USER = th.ObjectType(
 )
 
 SITE = th.ObjectType(
-    th.Property("aliases", th.ArrayType(th.StringType)),  # ty: ignore[invalid-argument-type]
+    th.Property("aliases", th.ArrayType(th.StringType)),
     th.Property("api_site_parameter", th.StringType),
     th.Property("audience", th.StringType),
     th.Property("closed_beta_date", th.IntegerType),
@@ -41,7 +41,7 @@ SITE = th.ObjectType(
     th.Property("high_resolution_icon_url", th.StringType),
     th.Property("launch_date", th.IntegerType),
     th.Property("logo_url", th.StringType),
-    th.Property("markdown_extensions", th.ArrayType(th.StringType)),  # ty: ignore[invalid-argument-type]
+    th.Property("markdown_extensions", th.ArrayType(th.StringType)),
     th.Property("name", th.StringType),
     th.Property("open_beta_date", th.IntegerType),
     th.Property(
@@ -95,7 +95,7 @@ class Questions(TagPartitionedStream):
         th.Property("last_activity_date", th.IntegerType),
         th.Property("creation_date", th.IntegerType),
         th.Property("last_edit_date", th.IntegerType),
-        th.Property("tags", th.ArrayType(th.StringType)),  # ty: ignore[invalid-argument-type]
+        th.Property("tags", th.ArrayType(th.StringType)),
         th.Property("view_count", th.IntegerType),
         th.Property("answer_count", th.IntegerType),
         th.Property("comment_count", th.IntegerType),
@@ -184,7 +184,7 @@ class QuestionAnswers(TagPartitionedStream):
                     th.Property("link", th.StringType),
                     th.Property("name", th.StringType),
                     th.Property("slug", th.StringType),
-                    th.Property("tags", th.ArrayType(th.StringType)),  # ty: ignore[invalid-argument-type]
+                    th.Property("tags", th.ArrayType(th.StringType)),
                 ),
             ),
         ),

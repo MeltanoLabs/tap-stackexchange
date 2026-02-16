@@ -44,7 +44,7 @@ class TapStackExchange(Tap):
         ),
         th.Property(
             "tags",
-            th.ArrayType(th.StringType),  # ty: ignore[invalid-argument-type]
+            th.ArrayType(th.StringType),
             default=[],
             description="Question tags",
         ),
