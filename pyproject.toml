@@ -33,7 +33,6 @@ dependencies = [
   "singer-sdk==0.53.*",
   "typing-extensions>=4.15; python_full_version<'3.12'",
 ]
-
 urls.Documentation = "https://github.com/MeltanoLabs/tap-stackexchange/blob/main/README.md"
 urls.Homepage = "https://github.com/MeltanoLabs/tap-stackexchange"
 urls.Repository = "https://github.com/MeltanoLabs/tap-stackexchange"
@@ -56,9 +55,9 @@ typing = [
   "types-requests>=2.32.4",
 ]
 
-[tool.hatch.version]
-fallback-version = "0.0.0"
-source = "vcs"
+[tool.hatch]
+version.fallback-version = "0.0.0"
+version.source = "vcs"
 
 [tool.uv]
 required-version = ">=0.9"
@@ -68,7 +67,6 @@ line-length = 88
 lint.select = [
   "ALL",
 ]
-
 lint.flake8-annotations.allow-star-arg-any = true
 lint.isort.known-first-party = [
   "tap_stackexchange",
@@ -95,23 +93,19 @@ envlist = [
   "py313",
   "py314",
 ]
-
-[tool.tox.env.typing]
-dependency_groups = [ "testing", "typing" ]
-commands = [
+env.typing.dependency_groups = [ "testing", "typing" ]
+env.typing.commands = [
   [ "mypy", { replace = "posargs", default = [ "tap_stackexchange", "tests" ], extend = true } ],
   [ "ty", "check", { replace = "posargs", default = [ "tap_stackexchange", "tests" ], extend = true } ],
 ]
-
-[tool.tox.env_run_base]
-runner = "uv-venv-lock-runner"
-pass_env = [
+env_run_base.runner = "uv-venv-lock-runner"
+env_run_base.pass_env = [
   "GITHUB_*",
   "TAP_STACKEXCHANGE_*",
 ]
-set_env = { "PYO3_USE_ABI3_FORWARD_COMPATIBILITY" = "1" }
-dependency_groups = [ "testing" ]
-commands = [ [ "pytest", { replace = "posargs", default = [ "tests" ], extend = true } ] ]
+env_run_base.set_env = { "PYO3_USE_ABI3_FORWARD_COMPATIBILITY" = "1" }
+env_run_base.dependency_groups = [ "testing" ]
+env_run_base.commands = [ [ "pytest", { replace = "posargs", default = [ "tests" ], extend = true } ] ]
 
 [tool.mypy]
 strict = true
