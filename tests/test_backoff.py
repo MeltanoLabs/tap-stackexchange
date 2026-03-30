@@ -30,7 +30,7 @@ def test_explicit_backoff(httpserver: HTTPServer) -> None:
     )
 
     with pytest.raises(LimiterDelayException):
-        next(tags.get_records(None))  # type: ignore[call-overload]
+        next(tags.get_records(None))  # type: ignore[call-overload]  # ty:ignore[invalid-argument-type]
 
 
 def test_error_backoff(httpserver: HTTPServer) -> None:
@@ -49,4 +49,4 @@ def test_error_backoff(httpserver: HTTPServer) -> None:
     )
 
     with pytest.raises(LimiterDelayException):
-        next(tags.get_records(None))  # type: ignore[call-overload]
+        next(tags.get_records(None))  # type: ignore[call-overload]  # ty:ignore[invalid-argument-type]

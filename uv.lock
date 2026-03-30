@@ -1116,7 +1116,7 @@ dev = [
     { name = "pytest-github-actions-annotate-failures", specifier = ">=0.3" },
     { name = "pytest-httpserver", marker = "python_full_version < '4'", specifier = ">=1.0.8" },
     { name = "singer-sdk", extras = ["testing"] },
-    { name = "ty", specifier = ">=0.0.1a29" },
+    { name = "ty", specifier = ">=0.0.26" },
     { name = "types-requests", specifier = ">=2.32.4" },
 ]
 testing = [
@@ -1127,7 +1127,7 @@ testing = [
 ]
 typing = [
     { name = "mypy", specifier = ">=1.18" },
-    { name = "ty", specifier = ">=0.0.1a29" },
+    { name = "ty", specifier = ">=0.0.26" },
     { name = "types-requests", specifier = ">=2.32.4" },
 ]
 

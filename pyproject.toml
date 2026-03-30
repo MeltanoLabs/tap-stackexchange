@@ -16,7 +16,6 @@ keywords = [
   "StackExchange",
 ]
 license = "Apache-2.0"
-authors = [ { name = "Edgar Ramírez-Mondragón", email = "edgarrm358@gmail.com" } ]
 requires-python = ">=3.10"
 classifiers = [
   "Programming Language :: Python :: 3 :: Only",
@@ -33,10 +32,15 @@ dependencies = [
   "singer-sdk==0.53.*",
   "typing-extensions>=4.15; python_full_version<'3.12'",
 ]
-urls.Documentation = "https://github.com/MeltanoLabs/tap-stackexchange/blob/main/README.md"
-urls.Homepage = "https://github.com/MeltanoLabs/tap-stackexchange"
-urls.Repository = "https://github.com/MeltanoLabs/tap-stackexchange"
-scripts.tap-stackexchange = "tap_stackexchange.tap:TapStackExchange.cli"
+[[project.authors]]
+name = "Edgar Ramírez-Mondragón"
+email = "edgarrm358@gmail.com"
+[project.scripts]
+tap-stackexchange = "tap_stackexchange.tap:TapStackExchange.cli"
+[project.urls]
+Documentation = "https://github.com/MeltanoLabs/tap-stackexchange/blob/main/README.md"
+Homepage = "https://github.com/MeltanoLabs/tap-stackexchange"
+Repository = "https://github.com/MeltanoLabs/tap-stackexchange"
 
 [dependency-groups]
 dev = [
@@ -51,61 +55,35 @@ testing = [
 ]
 typing = [
   "mypy>=1.18",
-  "ty>=0.0.1a29",
+  "ty>=0.0.26",
   "types-requests>=2.32.4",
 ]
 
 [tool.hatch]
-version.fallback-version = "0.0.0"
-version.source = "vcs"
+[tool.hatch.version]
+fallback-version = "0.0.0"
+source = "vcs"
 
 [tool.uv]
 required-version = ">=0.9"
 
 [tool.ruff]
 line-length = 88
-lint.select = [
+[tool.ruff.lint]
+select = [
   "ALL",
 ]
-lint.flake8-annotations.allow-star-arg-any = true
-lint.isort.known-first-party = [
+flake8-annotations.allow-star-arg-any = true
+isort.known-first-party = [
   "tap_stackexchange",
 ]
-lint.isort.required-imports = [
+isort.required-imports = [
   "from __future__ import annotations",
 ]
-lint.pydocstyle.convention = "google"
+pydocstyle.convention = "google"
 
 [tool.pyproject-fmt]
-max_supported_python = "3.14"
-
-[tool.tox]
-minversion = "4.22"
-requires = [
-  "tox>=4.22",
-  "tox-uv",
-]
-envlist = [
-  "typing",
-  "py310",
-  "py311",
-  "py312",
-  "py313",
-  "py314",
-]
-env.typing.dependency_groups = [ "testing", "typing" ]
-env.typing.commands = [
-  [ "mypy", { replace = "posargs", default = [ "tap_stackexchange", "tests" ], extend = true } ],
-  [ "ty", "check", { replace = "posargs", default = [ "tap_stackexchange", "tests" ], extend = true } ],
-]
-env_run_base.runner = "uv-venv-lock-runner"
-env_run_base.pass_env = [
-  "GITHUB_*",
-  "TAP_STACKEXCHANGE_*",
-]
-env_run_base.set_env = { "PYO3_USE_ABI3_FORWARD_COMPATIBILITY" = "1" }
-env_run_base.dependency_groups = [ "testing" ]
-env_run_base.commands = [ [ "pytest", { replace = "posargs", default = [ "tests" ], extend = true } ] ]
+table_format = "long"
 
 [tool.mypy]
 strict = true
@@ -113,3 +91,32 @@ warn_redundant_casts = true
 warn_unreachable = true
 warn_unused_configs = true
 warn_unused_ignores = true
+
+[tool.tox]
+requires = [
+  "tox>=4.51",
+  "tox-uv",
+]
+envlist = [
+  "typing",
+  "test",
+]
+[tool.tox.env.test]
+description = "run tests on Python {py_dot_ver}"
+base_python_python = [ ".python-version" ]
+[tool.tox.env.typing]
+description = "type checks"
+dependency_groups = [ "testing", "typing" ]
+commands = [
+  [ "mypy", { replace = "posargs", default = [ "tap_stackexchange", "tests" ], extend = true } ],
+  [ "ty", "check", { replace = "posargs", default = [ "tap_stackexchange", "tests" ], extend = true } ],
+]
+
+[tool.tox.env_run_base]
+runner = "uv-venv-lock-runner"
+pass_env = [
+  "GITHUB_*",
+  "TAP_STACKEXCHANGE_*",
+]
+dependency_groups = [ "testing" ]
+commands = [ [ "pytest", { replace = "posargs", default = [ "tests" ], extend = true } ] ]
