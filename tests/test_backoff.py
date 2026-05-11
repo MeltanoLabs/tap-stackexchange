@@ -3,9 +3,10 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
+from unittest.mock import patch
 
 import pytest
-from pyrate_limiter import LimiterDelayException
+from singer_sdk.exceptions import RetriableAPIError
 
 from tap_stackexchange.streams import Tags
 from tap_stackexchange.tap import TapStackExchange
@@ -14,8 +15,13 @@ if TYPE_CHECKING:
     from pytest_httpserver import HTTPServer
 
 
+class _Tags(Tags):
+    def backoff_max_tries(self) -> int:
+        return 1
+
+
 def test_explicit_backoff(httpserver: HTTPServer) -> None:
-    """Test that a backoff value is handled correctly."""
+    """Test that a backoff value triggers a sleep and retry."""
     base_url = httpserver.url_for("/")
     httpserver.expect_oneshot_request("/tags").respond_with_json(
         {
@@ -24,17 +30,22 @@ def test_explicit_backoff(httpserver: HTTPServer) -> None:
         },
     )
 
-    tags = Tags(
+    tags = _Tags(
         tap=TapStackExchange(),
         base_url=base_url,
     )
 
-    with pytest.raises(LimiterDelayException):
+    with (
+        patch("tap_stackexchange.client.time.sleep") as mock_sleep,
+        pytest.raises(RetriableAPIError),
+    ):
         next(tags.get_records(None))  # type: ignore[call-overload]  # ty:ignore[invalid-argument-type]
+
+    mock_sleep.assert_called_once_with(10)
 
 
 def test_error_backoff(httpserver: HTTPServer) -> None:
-    """Test that a 500 response with a backoff value is handled correctly."""
+    """Test that a 500 response raises RetriableAPIError."""
     base_url = httpserver.url_for("/")
     httpserver.expect_oneshot_request("/tags").respond_with_json(
         {
@@ -43,10 +54,10 @@ def test_error_backoff(httpserver: HTTPServer) -> None:
         status=500,
     )
 
-    tags = Tags(
+    tags = _Tags(
         tap=TapStackExchange(),
         base_url=base_url,
     )
 
-    with pytest.raises(LimiterDelayException):
+    with pytest.raises(RetriableAPIError):
         next(tags.get_records(None))  # type: ignore[call-overload]  # ty:ignore[invalid-argument-type]
