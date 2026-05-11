@@ -5,16 +5,10 @@ from __future__ import annotations
 import json
 import logging
 import sys
+import time
 import typing as t
 
-from pyrate_limiter import (
-    Duration,
-    Limiter,
-    LimiterDelayException,
-    Rate,
-    RateItem,
-    TimeClock,
-)
+from pyrate_limiter import Duration, Limiter, Rate
 from requests_cache import install_cache
 from singer_sdk.exceptions import RetriableAPIError
 from singer_sdk.pagination import BasePageNumberPaginator
@@ -51,7 +45,7 @@ def has_backoff(response: requests.Response) -> bool:
 
 install_cache(expire_after=3600, filter_fn=lambda r: not has_backoff(r))  # 1 hour
 rate = Rate(100, Duration.MINUTE)
-limiter = Limiter(rate, max_delay=100_000)
+limiter = Limiter(rate)
 
 
 class StackExchangeStream(RESTStream[int]):
@@ -84,10 +78,9 @@ class StackExchangeStream(RESTStream[int]):
     @override
     def request_decorator(self, func: t.Callable) -> t.Callable:  # type: ignore[type-arg]
         """Decorate the request method of the stream."""
-        return limiter.as_decorator()(self._limiter_mapping)(func)
-
-    def _limiter_mapping(self, *_args: t.Any, **_kwargs: t.Any) -> tuple[str, int]:
-        return self.tap_name, 1
+        return limiter.as_decorator(name=self.tap_name, weight=1)(  # type: ignore[no-any-return,no-untyped-call]
+            super().request_decorator(func),
+        )
 
     @override
     def validate_response(self, response: requests.Response) -> None:
@@ -96,31 +89,11 @@ class StackExchangeStream(RESTStream[int]):
             self.logger.info(response.text)
             backoff = response.json()["backoff"]
             self.logger.info("BACKOFF: %s", backoff)
-            clock = TimeClock()
-            raise LimiterDelayException(
-                item=RateItem(
-                    self.tap_name,
-                    clock.now(),  # type: ignore[no-untyped-call]
-                ),
-                rate=rate,
-                actual_delay=backoff,
-                max_delay=100_000,
-            )
+            time.sleep(backoff)
+            msg = f"Backoff {backoff}s requested"
+            raise RetriableAPIError(msg, response)
 
-        try:
-            super().validate_response(response)
-        except RetriableAPIError as exc:
-            self.logger.info("TEXT: %s", response.text)
-            clock = TimeClock()
-            raise LimiterDelayException(
-                item=RateItem(
-                    self.tap_name,
-                    clock.now(),  # type: ignore[no-untyped-call]
-                ),
-                rate=rate,
-                actual_delay=5_000,
-                max_delay=100_000,
-            ) from exc
+        super().validate_response(response)
 
     @override
     def get_url_params(

@@ -27,7 +27,7 @@ classifiers = [
 ]
 dynamic = [ "version" ]
 dependencies = [
-  "pyrate-limiter==3.*",
+  "pyrate-limiter==4.*",
   "requests-cache==1.*",
   "singer-sdk==0.53.*",
   "typing-extensions>=4.15; python_full_version<'3.12'",
@@ -98,7 +98,6 @@ addopts = [ "-ra" ]
 filterwarnings = [
   "error",
   "once:Fields in transformed catalog but not in records:UserWarning",
-  "once:'asyncio.iscoroutinefunction' is deprecated:DeprecationWarning",
 ]
 log_level = "INFO"
 minversion = "9"
