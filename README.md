@@ -8,19 +8,19 @@ Built with the [Meltano SDK](https://sdk.meltano.com) for Singer Taps and Target
 
 ## Capabilities
 
-* `sync`
-* `catalog`
-* `state`
-* `discover`
+- `sync`
+- `catalog`
+- `state`
+- `discover`
 
 ## Settings
 
-| Setting   | Required | Default | Description |
+| Setting | Required | Default | Description |
 |:----------|:--------:|:-------:|:------------|
-| key       | False    | None    | Pass this to receive a higher request quota |
-| site      | False    | stackoverflow.com | StackExchange site |
-| tags      | False    | None    | Question tags |
-| start_date| False    | None    | The earliest record date to sync |
+| key | False | None | Pass this to receive a higher request quota |
+| site | False | stackoverflow.com | StackExchange site |
+| tags | False | None | Question tags |
+| start_date| False | None | The earliest record date to sync |
 
 A full list of supported settings and capabilities is available by running: `tap-stackexchange --about`
 
@@ -32,9 +32,9 @@ parameters:
 
 - `include`
 
-  | Parameter                | Description                              |
+  | Parameter | Description |
   |:-------------------------|:-----------------------------------------|
-  | `question.comment_count` | The number of comments on the question   |
+  | `question.comment_count` | The number of comments on the question |
   | `tag.last_activity_date` | The date of the last activity on the tag |
 
 - `unsafe=false`
@@ -51,8 +51,8 @@ To use a custom filter, set the `filter` setting to the filter ID. Note that if 
 use a custom catalog that includes the fields you want to sync. That is you will need to
 
 1. Write the default catalog to a file: `tap-stackexchange --discover > catalog.json`
-2. Edit the catalog file to include the fields not included by the default API filter
-3. Run the tap with the custom catalog: `tap-stackexchange --config config.json --catalog catalog.json`
+1. Edit the catalog file to include the fields not included by the default API filter
+1. Run the tap with the custom catalog: `tap-stackexchange --config config.json --catalog catalog.json`
 
 ## Installation
 

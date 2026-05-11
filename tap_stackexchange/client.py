@@ -75,8 +75,8 @@ class StackExchangeStream(RESTStream[int]):
         self.base_url = base_url
         super().__init__(*args, **kwargs)
 
-    @override
     @property
+    @override
     def url_base(self) -> str:
         """API base URL."""
         return self.base_url
@@ -157,8 +157,8 @@ class StackExchangeStream(RESTStream[int]):
 class TagPartitionedStream(StackExchangeStream):
     """Tag-partitioned stream class."""
 
-    @override
     @property
+    @override
     def partitions(self) -> list[dict[str, t.Any]] | None:
         """Partition stream by the configured tags."""
         return [{"tag": tag} for tag in self.config.get("tags", [])]

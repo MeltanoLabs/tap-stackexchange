@@ -27,8 +27,8 @@ classifiers = [
 ]
 dynamic = [ "version" ]
 dependencies = [
-  "pyrate-limiter==3.*; python_version<'4'",
-  "requests-cache==1.*; python_version<'4'",
+  "pyrate-limiter==3.*",
+  "requests-cache==1.*",
   "singer-sdk==0.53.*",
   "typing-extensions>=4.15; python_full_version<'3.12'",
 ]
@@ -86,11 +86,24 @@ pydocstyle.convention = "google"
 table_format = "long"
 
 [tool.mypy]
+enable_error_code = [ "ignore-without-code", "redundant-expr", "truthy-bool" ]
 strict = true
 warn_redundant_casts = true
 warn_unreachable = true
 warn_unused_configs = true
 warn_unused_ignores = true
+
+[tool.pytest]
+addopts = [ "-ra" ]
+filterwarnings = [
+  "error",
+  "once:Fields in transformed catalog but not in records:UserWarning",
+  "once:'asyncio.iscoroutinefunction' is deprecated:DeprecationWarning",
+]
+log_level = "INFO"
+minversion = "9"
+strict = true
+testpaths = [ "tests" ]
 
 [tool.tox]
 requires = [
