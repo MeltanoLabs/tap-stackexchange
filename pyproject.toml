@@ -29,7 +29,7 @@ dynamic = [ "version" ]
 dependencies = [
   "pyrate-limiter==4.*",
   "requests-cache==1.*",
-  "singer-sdk==0.53.*",
+  "singer-sdk>=0.53,<0.55",
   "typing-extensions>=4.15; python_full_version<'3.12'",
 ]
 [[project.authors]]
