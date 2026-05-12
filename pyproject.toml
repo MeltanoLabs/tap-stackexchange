@@ -29,7 +29,7 @@ dynamic = [ "version" ]
 dependencies = [
   "pyrate-limiter==4.*",
   "requests-cache==1.*",
-  "singer-sdk==0.53.*",
+  "singer-sdk>=0.53,<0.55",
   "typing-extensions>=4.15; python_full_version<'3.12'",
 ]
 [[project.authors]]
@@ -98,6 +98,7 @@ addopts = [ "-ra" ]
 filterwarnings = [
   "error",
   "once:Fields in transformed catalog but not in records:UserWarning",
+  "once:Python .* will reach its end of life:singer_sdk.helpers._compat.SingerSDKPythonEOLWarning",
 ]
 log_level = "INFO"
 minversion = "9"

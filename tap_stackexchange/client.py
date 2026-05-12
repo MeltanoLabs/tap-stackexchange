@@ -11,7 +11,7 @@ import typing as t
 from pyrate_limiter import Duration, Limiter, Rate
 from requests_cache import install_cache
 from singer_sdk.exceptions import RetriableAPIError
-from singer_sdk.pagination import BasePageNumberPaginator
+from singer_sdk.pagination import PageNumberPaginator
 from singer_sdk.streams import RESTStream
 
 if sys.version_info >= (3, 12):
@@ -122,9 +122,9 @@ class StackExchangeStream(RESTStream[int]):
         return params
 
     @override
-    def get_new_paginator(self) -> BasePageNumberPaginator:
+    def get_new_paginator(self) -> PageNumberPaginator:
         """Return a new paginator instance."""
-        return BasePageNumberPaginator(start_value=1)
+        return PageNumberPaginator(start_value=1)
 
 
 class TagPartitionedStream(StackExchangeStream):
