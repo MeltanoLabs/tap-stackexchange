@@ -85,12 +85,12 @@ pydocstyle.convention = "google"
 table_format = "long"
 
 [tool.mypy]
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_unreachable = true
 enable_error_code = [ "ignore-without-code", "redundant-expr", "truthy-bool" ]
 strict = true
-warn_redundant_casts = true
-warn_unreachable = true
 warn_unused_configs = true
-warn_unused_ignores = true
 
 [tool.pytest]
 addopts = [ "-ra" ]
@@ -109,9 +109,9 @@ requires = [
   "tox>=4.51",
   "tox-uv",
 ]
-envlist = [
-  "typing",
+env_list = [
   "test",
+  "typing",
 ]
 [tool.tox.env.test]
 description = "run tests on Python {py_dot_ver}"
@@ -126,9 +126,9 @@ commands = [
 
 [tool.tox.env_run_base]
 runner = "uv-venv-lock-runner"
+dependency_groups = [ "testing" ]
 pass_env = [
   "GITHUB_*",
   "TAP_STACKEXCHANGE_*",
 ]
-dependency_groups = [ "testing" ]
 commands = [ [ "pytest", { replace = "posargs", default = [ "tests" ], extend = true } ] ]
