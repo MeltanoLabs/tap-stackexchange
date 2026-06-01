@@ -54,8 +54,8 @@ testing = [
   "singer-sdk[testing]",
 ]
 typing = [
-  "mypy>=1.18",
-  "ty>=0.0.26",
+  "mypy>=2.1",
+  "ty>=0.0.41",
 ]
 
 [tool.hatch]
@@ -73,12 +73,6 @@ select = [
   "ALL",
 ]
 flake8-annotations.allow-star-arg-any = true
-isort.known-first-party = [
-  "tap_stackexchange",
-]
-isort.required-imports = [
-  "from __future__ import annotations",
-]
 pydocstyle.convention = "google"
 
 [tool.pyproject-fmt]
@@ -91,6 +85,9 @@ warn_unreachable = true
 enable_error_code = [ "ignore-without-code", "redundant-expr", "truthy-bool" ]
 strict = true
 warn_unused_configs = true
+
+[tool.ty.rules]
+missing-override-decorator = "error"
 
 [tool.pytest]
 addopts = [ "-ra" ]

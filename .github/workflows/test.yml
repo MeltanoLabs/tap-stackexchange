@@ -1,5 +1,8 @@
 name: Test tap-stackexchange
 
+permissions:
+  contents: read
+
 on:
   push:
     branches: [main]
@@ -30,10 +33,11 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  FORCE_COLOR: "1"
+  FORCE_COLOR: 1
 
 jobs:
   tests:
+    name: Test
     runs-on: ubuntu-latest
     env:
       UV_CONSTRAINT: ${{ github.workspace }}/.github/workflows/constraints.txt
@@ -50,6 +54,8 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      with:
+        persist-credentials: false
 
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
@@ -69,14 +75,18 @@ jobs:
     - name: Run tests
       env:
         TAP_STACKEXCHANGE_KEY: ${{ secrets.TAP_STACKEXCHANGE_KEY }}
+        MATRIX_PYTHON_VERSION: ${{ matrix.python-version }}
       run: |
-        tox -e py$(echo ${{ matrix.python-version }} | tr -d .)
+        tox -e $MATRIX_PYTHON_VERSION
 
   typing:
+    name: Type check
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
       uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      with:
+        persist-credentials: false
 
     - name: Set up Python
       uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
