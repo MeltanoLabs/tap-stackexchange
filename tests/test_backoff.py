@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import sys
 from typing import TYPE_CHECKING
 from unittest.mock import patch
 
@@ -11,11 +12,17 @@ from singer_sdk.exceptions import RetriableAPIError
 from tap_stackexchange.streams import Tags
 from tap_stackexchange.tap import TapStackExchange
 
+if sys.version_info >= (3, 12):
+    from typing import override
+else:
+    from typing_extensions import override
+
 if TYPE_CHECKING:
     from pytest_httpserver import HTTPServer
 
 
 class _Tags(Tags):
+    @override
     def backoff_max_tries(self) -> int:
         return 1
 
