@@ -8,9 +8,7 @@ updates:
   - package-ecosystem: uv
     directory: "/"
     schedule:
-      interval: weekly
-      time: "10:23"
-      timezone: "America/Mexico_City"
+      interval: monthly
     versioning-strategy: increase-if-necessary
     commit-message:
       prefix: "feat(deps): "
@@ -27,8 +25,7 @@ updates:
   - package-ecosystem: pip
     directory: "/.github/workflows"
     schedule:
-      time: "10:23"
-      interval: weekly
+      interval: quarterly
     commit-message:
       prefix: "ci: "
     groups:
@@ -40,8 +37,7 @@ updates:
   - package-ecosystem: github-actions
     directory: "/"
     schedule:
-      interval: weekly
-      time: "10:23"
+      interval: quarterly
     commit-message:
       prefix: "ci: "
     groups:
