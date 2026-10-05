@@ -24,6 +24,7 @@ classifiers = [
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
   "Programming Language :: Python :: 3.14",
+  "Programming Language :: Python :: 3.15",
 ]
 dynamic = [ "version" ]
 dependencies = [
@@ -35,12 +36,12 @@ dependencies = [
 [[project.authors]]
 name = "Edgar Ramírez-Mondragón"
 email = "edgarrm358@gmail.com"
-[project.scripts]
-tap-stackexchange = "tap_stackexchange.tap:TapStackExchange.cli"
 [project.urls]
 Documentation = "https://github.com/MeltanoLabs/tap-stackexchange/blob/main/README.md"
 Homepage = "https://github.com/MeltanoLabs/tap-stackexchange"
 Repository = "https://github.com/MeltanoLabs/tap-stackexchange"
+[project.scripts]
+tap-stackexchange = "tap_stackexchange.tap:TapStackExchange.cli"
 
 [dependency-groups]
 dev = [
@@ -60,8 +61,8 @@ typing = [
 
 [tool.hatch]
 [tool.hatch.version]
-fallback-version = "0.0.0"
 source = "vcs"
+fallback-version = "0.0.0"
 
 [tool.uv]
 required-version = ">=0.9"
@@ -120,7 +121,6 @@ commands = [
   [ "mypy", { replace = "posargs", default = [ "tap_stackexchange", "tests" ], extend = true } ],
   [ "ty", "check", { replace = "posargs", default = [ "tap_stackexchange", "tests" ], extend = true } ],
 ]
-
 [tool.tox.env_run_base]
 runner = "uv-venv-lock-runner"
 dependency_groups = [ "testing" ]
