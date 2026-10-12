@@ -1,3 +1,5 @@
+# Copyright (C) 2026 Meltano.
+
 """Test that backoff values are handled correctly."""
 
 from __future__ import annotations

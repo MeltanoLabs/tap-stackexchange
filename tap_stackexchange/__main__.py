@@ -1,3 +1,5 @@
+# Copyright (C) 2026 Meltano.
+
 """Tap executable."""
 
 from __future__ import annotations

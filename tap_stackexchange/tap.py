@@ -1,3 +1,5 @@
+# Copyright (C) 2026 Meltano.
+
 """StackExchange tap class."""
 
 from __future__ import annotations
