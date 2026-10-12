@@ -1,3 +1,5 @@
+# Copyright (C) 2026 Meltano.
+
 """Stream type classes for tap-stackexchange."""
 
 from __future__ import annotations

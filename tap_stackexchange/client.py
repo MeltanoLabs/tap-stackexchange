@@ -1,3 +1,5 @@
+# Copyright (C) 2026 Meltano.
+
 """REST client handling, including StackExchangeStream base class."""
 
 from __future__ import annotations
